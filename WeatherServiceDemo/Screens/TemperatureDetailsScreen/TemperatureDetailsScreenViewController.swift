@@ -14,6 +14,8 @@ protocol TemperatureDetailsScreenViewable: AnyObject {
 
 final class TemperatureDetailsScreenViewController: UIViewController {
 
+    private let activityIndicatorViewProvider = ActivityIndicatorViewProvider()
+
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +52,7 @@ final class TemperatureDetailsScreenViewController: UIViewController {
         self.view.backgroundColor = Style.shared.backgroundColor
         self.view.addSubview(tableView)
 
+        self.activityIndicatorViewProvider.addToSuperViewAndConstrain(to: self.view)
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
@@ -72,16 +75,19 @@ final class TemperatureDetailsScreenViewController: UIViewController {
     }
 
     private func loadForecastDetails() {
+        self.activityIndicatorViewProvider.start()
         viewModel.loadForecastDetailsForCurrentLocation()
     }
 }
 
 extension TemperatureDetailsScreenViewController: TemperatureDetailsScreenViewable {
     func showAlert(with title: String, message: String) {
+        self.activityIndicatorViewProvider.stop()
         alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message), parentViewController: self)
     }
 
     func refreshView(with sections: [Section]) {
+        self.activityIndicatorViewProvider.stop()
         self.sections = sections
         self.tableView.reloadData()
     }

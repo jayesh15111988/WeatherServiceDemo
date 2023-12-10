@@ -33,6 +33,7 @@
 		91A8B7FC2B25A04F00E35C10 /* AlertDisplayUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7FB2B25A04F00E35C10 /* AlertDisplayUtility.swift */; };
 		91A8B7FE2B25BC4D00E35C10 /* CurrentTemperatureDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7FD2B25BC4D00E35C10 /* CurrentTemperatureDetailsTableViewCell.swift */; };
 		91A8B8002B25BC5B00E35C10 /* ForecastTemperatureDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7FF2B25BC5B00E35C10 /* ForecastTemperatureDetailsTableViewCell.swift */; };
+		91A8B8042B25C8AC00E35C10 /* ActivityIndicatorViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B8032B25C8AC00E35C10 /* ActivityIndicatorViewProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		91A8B7FB2B25A04F00E35C10 /* AlertDisplayUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDisplayUtility.swift; sourceTree = "<group>"; };
 		91A8B7FD2B25BC4D00E35C10 /* CurrentTemperatureDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTemperatureDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		91A8B7FF2B25BC5B00E35C10 /* ForecastTemperatureDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTemperatureDetailsTableViewCell.swift; sourceTree = "<group>"; };
+		91A8B8032B25C8AC00E35C10 /* ActivityIndicatorViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorViewProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,9 +251,26 @@
 		91A8B7FA2B25A04200E35C10 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				91A8B7FB2B25A04F00E35C10 /* AlertDisplayUtility.swift */,
+				91A8B8022B25C89F00E35C10 /* ActivityIndicatorViewProvider */,
+				91A8B8012B25C89400E35C10 /* AlertDisplayUtilities */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		91A8B8012B25C89400E35C10 /* AlertDisplayUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				91A8B7FB2B25A04F00E35C10 /* AlertDisplayUtility.swift */,
+			);
+			path = AlertDisplayUtilities;
+			sourceTree = "<group>";
+		};
+		91A8B8022B25C89F00E35C10 /* ActivityIndicatorViewProvider */ = {
+			isa = PBXGroup;
+			children = (
+				91A8B8032B25C8AC00E35C10 /* ActivityIndicatorViewProvider.swift */,
+			);
+			path = ActivityIndicatorViewProvider;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,6 +359,7 @@
 				91A8B7FC2B25A04F00E35C10 /* AlertDisplayUtility.swift in Sources */,
 				91A8B7EB2B256DF400E35C10 /* JSONFileReader.swift in Sources */,
 				91A8B8002B25BC5B00E35C10 /* ForecastTemperatureDetailsTableViewCell.swift in Sources */,
+				91A8B8042B25C8AC00E35C10 /* ActivityIndicatorViewProvider.swift in Sources */,
 				91A8B7CA2B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift in Sources */,
 				91A8B7FE2B25BC4D00E35C10 /* CurrentTemperatureDetailsTableViewCell.swift in Sources */,
 				91A8B7F32B257BD100E35C10 /* WeatherServiceTableSectionHeaderView.swift in Sources */,

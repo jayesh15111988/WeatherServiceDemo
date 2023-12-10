@@ -17,6 +17,8 @@ final class LocationsListScreenViewController: UIViewController {
 
     private var locations: [Location] = []
 
+    private let activityIndicatorViewProvider = ActivityIndicatorViewProvider()
+
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,6 +54,7 @@ final class LocationsListScreenViewController: UIViewController {
         self.view.addSubview(tableView)
         self.title = viewModel.title
 
+        self.activityIndicatorViewProvider.addToSuperViewAndConstrain(to: self.view)
         self.tableView.delegate = self
         self.tableView.dataSource = self
         setupNavigationBarButton()
@@ -86,17 +89,20 @@ final class LocationsListScreenViewController: UIViewController {
     }
 
     func loadLocations() {
+        self.activityIndicatorViewProvider.start()
         viewModel.loadLocations()
     }
 }
 
 extension LocationsListScreenViewController: LocationsListScreenViewable {
     func reloadView(with locationsList: [Location]) {
+        self.activityIndicatorViewProvider.stop()
         self.locations = locationsList
         self.tableView.reloadData()
     }
 
     func showAlert(with title: String, message: String) {
+        self.activityIndicatorViewProvider.stop()
         self.alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message), parentViewController: self)
     }
 
