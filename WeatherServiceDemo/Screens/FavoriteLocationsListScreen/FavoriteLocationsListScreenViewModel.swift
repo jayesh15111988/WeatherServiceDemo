@@ -14,9 +14,11 @@ final class FavoriteLocationsListScreenViewModel {
     let title: String
 
     var router: FavoriteLocationsListScreenRouter?
+    let favoriteStatusChangedClosure: (String) -> Void
 
-    init(favoriteLocationModels: [Location]) {
+    init(favoriteLocationModels: [Location], favoriteStatusChangedClosure: @escaping (String) -> Void) {
         self.favoriteLocationModels = favoriteLocationModels
+        self.favoriteStatusChangedClosure = favoriteStatusChangedClosure
         self.title = "Favorites"
     }
 
@@ -24,6 +26,8 @@ final class FavoriteLocationsListScreenViewModel {
         let favoriteLocationToRemove = favoriteLocationModels[index]
         favoriteLocationToRemove.toggleFavoriteStatus()
         favoriteLocationModels.remove(at: index)
+
+        favoriteStatusChangedClosure(favoriteLocationToRemove.id)
 
         if favoriteLocationModels.isEmpty {
             view?.showAlert(with: "No Favorites", message: "You don't have any favorites. Please click on star icon to add location to favorites list", actions: [UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in

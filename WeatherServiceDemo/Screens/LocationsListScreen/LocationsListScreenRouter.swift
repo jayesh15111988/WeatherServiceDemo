@@ -25,8 +25,8 @@ final class LocationsListScreenRouter {
         self.navController.pushViewController(locationsViewController, animated: true)
     }
 
-    func navigateToFavoritesPage(with favoriteLocations: [Location]) {
-        let favoritesPageRouter = FavoriteLocationsListScreenRouter(navController: self.navController, favoriteLocationModels: favoriteLocations)
+    func navigateToFavoritesPage(with favoriteLocations: [Location], favoriteStatusChangedClosure: @escaping (String) -> Void) {
+        let favoritesPageRouter = FavoriteLocationsListScreenRouter(navController: self.navController, favoriteLocationModels: favoriteLocations, favoriteStatusChangedClosure: favoriteStatusChangedClosure)
         favoritesPageRouter.start()
     }
 

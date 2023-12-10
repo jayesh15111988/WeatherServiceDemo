@@ -10,6 +10,7 @@ import UIKit
 protocol LocationsListScreenViewable: AnyObject {
     func reloadView(with locationsList: [Location])
     func showAlert(with title: String, message: String)
+    func reloadCell(at inde: Int)
 }
 
 final class LocationsListScreenViewController: UIViewController {
@@ -97,6 +98,10 @@ extension LocationsListScreenViewController: LocationsListScreenViewable {
 
     func showAlert(with title: String, message: String) {
         self.alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message), parentViewController: self)
+    }
+
+    func reloadCell(at index: Int) {
+        self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 }
 

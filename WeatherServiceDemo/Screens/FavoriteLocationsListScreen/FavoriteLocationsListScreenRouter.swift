@@ -11,14 +11,16 @@ final class FavoriteLocationsListScreenRouter: Router {
 
     let rootViewController: UINavigationController
     private let favoriteLocationModels: [Location]
+    private let favoriteStatusChangedClosure: (String) -> Void
 
-    init(navController: UINavigationController, favoriteLocationModels: [Location]) {
+    init(navController: UINavigationController, favoriteLocationModels: [Location], favoriteStatusChangedClosure: @escaping (String) -> Void) {
         self.rootViewController = navController
+        self.favoriteStatusChangedClosure = favoriteStatusChangedClosure
         self.favoriteLocationModels = favoriteLocationModels
     }
 
     func start() {
-        let viewModel = FavoriteLocationsListScreenViewModel(favoriteLocationModels: self.favoriteLocationModels)
+        let viewModel = FavoriteLocationsListScreenViewModel(favoriteLocationModels: self.favoriteLocationModels, favoriteStatusChangedClosure: favoriteStatusChangedClosure)
 
         let viewController = FavoriteLocationsListScreenViewController(viewModel: viewModel, alertDisplayUtility: AlertDisplayUtility())
 

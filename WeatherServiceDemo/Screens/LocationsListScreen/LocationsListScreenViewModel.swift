@@ -55,7 +55,15 @@ final class LocationsListScreenViewModel {
         if favoriteLocations.isEmpty {
             self.view?.showAlert(with: "No Favorites", message: "You have not favorited any locations yet.")
         } else {
-            router?.navigateToFavoritesPage(with: favoriteLocations)
+
+            let favoriteStatusChangedClosure: (String) -> Void = { locationId in
+
+                if let updatedLocationIndex = self.locationsListScreenLocationModels.firstIndex(where: { $0.id == locationId }) {
+                    self.view?.reloadCell(at: updatedLocationIndex)
+                }
+            }
+
+            router?.navigateToFavoritesPage(with: favoriteLocations, favoriteStatusChangedClosure: favoriteStatusChangedClosure)
         }
     }
 
