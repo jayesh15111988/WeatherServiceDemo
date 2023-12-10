@@ -6,7 +6,7 @@
 //
 
 import CoreLocation
-import Foundation
+import UIKit
 
 final class LocationsListScreenViewModel {
 
@@ -14,14 +14,16 @@ final class LocationsListScreenViewModel {
     var router: LocationsListScreenRouter?
 
     let jsonFileReader: JSONFileReadable
+    let title: String
 
     init(jsonFileReader: JSONFileReadable) {
         self.jsonFileReader = jsonFileReader
+        self.title = "Locations List"
     }
 
     func loadLocations() {
         DispatchQueue.global(qos: .userInitiated).async {
-            guard let locationsParentNode: DecodableModel.LocationsParentNode = jsonFileReader.getModelFromJSONFile(with: "locations") else {
+            guard let locationsParentNode: DecodableModel.LocationsParentNode = self.jsonFileReader.getModelFromJSONFile(with: "locations") else {
                 self.view?.reloadView(with: [])
                 return
             }
@@ -61,6 +63,10 @@ extension LocationsListScreenViewModel {
             self.name = name
             self.coordinates = coordinates
             self.isFavorite = isFavorite
+        }
+
+        var favoritesImage: UIImage? {
+            return self.isFavorite ? Style.shared.favoriteImage : Style.shared.nonFavoriteImage
         }
 
         struct Coordinates {
