@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4FEB20D3-858D-4188-AE1E-3B3520210E6A"
+            uuid = "48621E66-6B02-4F45-B131-8D86C0928B67"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WeatherServiceDemo/Screens/LocationsListScreen/LocationsListScreenViewController.swift"
+            filePath = "WeatherServiceDemo/Screens/FavoriteLocationsListScreen/FavoriteLocationsListScreenViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "reloadView(with:)"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

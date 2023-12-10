@@ -13,6 +13,7 @@ final class LocationsListScreenViewModel {
     weak var view: LocationsListScreenViewable?
     var router: LocationsListScreenRouter?
 
+    private var locationsListScreenLocationModels: [Location] = []
     let jsonFileReader: JSONFileReadable
     let title: String
 
@@ -28,11 +29,11 @@ final class LocationsListScreenViewModel {
                 return
             }
 
-            let locationsListScreenLocationModels: [LocationsListScreenViewModel.Location] = locationsParentNode.locations.map { codableLocation -> LocationsListScreenViewModel.Location in
+            self.locationsListScreenLocationModels = locationsParentNode.locations.map { codableLocation -> Location in
 
                 let coordinates = codableLocation.coordinates
 
-                return LocationsListScreenViewModel.Location(
+                return Location(
                     id: codableLocation.id,
                     name: codableLocation.name,
                     coordinates: Location.Coordinates(
@@ -43,39 +44,45 @@ final class LocationsListScreenViewModel {
             }
 
             DispatchQueue.main.async {
-                self.view?.reloadView(with: locationsListScreenLocationModels)
+                self.view?.reloadView(with: self.locationsListScreenLocationModels)
             }
+        }
+    }
+
+    func goToFavoritesPage() {
+        let favoriteLocations = self.locationsListScreenLocationModels.filter({ $0.isFavorite })
+
+        if favoriteLocations.isEmpty {
+            self.view?.showAlert(with: "No Favorites", message: "You have not favorited any locations yet.")
+        } else {
+            router?.navigateToFavoritesPage(with: favoriteLocations)
         }
     }
 }
 
-extension LocationsListScreenViewModel {
+final class Location {
+    let id: String
+    let name: String
+    let coordinates: Coordinates
+    private(set)var isFavorite: Bool
 
-    final class Location {
+    init(id: String, name: String, coordinates: Coordinates, isFavorite: Bool = false) {
+        self.id = id
+        self.name = name
+        self.coordinates = coordinates
+        self.isFavorite = isFavorite
+    }
 
-        let id: String
-        let name: String
-        let coordinates: Coordinates
-        private(set)var isFavorite: Bool
+    var favoritesImage: UIImage? {
+        return self.isFavorite ? Style.shared.favoriteImage : Style.shared.nonFavoriteImage
+    }
 
-        init(id: String, name: String, coordinates: Coordinates, isFavorite: Bool = false) {
-            self.id = id
-            self.name = name
-            self.coordinates = coordinates
-            self.isFavorite = isFavorite
-        }
+    struct Coordinates {
+        let latitude: CLLocationDegrees
+        let longitude: CLLocationDegrees
+    }
 
-        var favoritesImage: UIImage? {
-            return self.isFavorite ? Style.shared.favoriteImage : Style.shared.nonFavoriteImage
-        }
-
-        struct Coordinates {
-            let latitude: CLLocationDegrees
-            let longitude: CLLocationDegrees
-        }
-
-        func toggleFavoriteStatus() {
-            isFavorite = !isFavorite
-        }
+    func toggleFavoriteStatus() {
+        isFavorite = !isFavorite
     }
 }

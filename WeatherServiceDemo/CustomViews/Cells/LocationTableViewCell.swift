@@ -79,7 +79,7 @@ final class LocationTableViewCell: UITableViewCell {
         favoriteButtonActionClosure?()
     }
 
-    func configure(with locationsModel: LocationsListScreenViewModel.Location) {
+    func configure(with locationsModel: Location) {
         self.nameLabel.text = locationsModel.name
         self.favoriteButtonView.setImage(locationsModel.favoritesImage, for: .normal)
     }

@@ -8,12 +8,13 @@
 import UIKit
 
 protocol LocationsListScreenViewable: AnyObject {
-    func reloadView(with locationsList: [LocationsListScreenViewModel.Location])
+    func reloadView(with locationsList: [Location])
+    func showAlert(with title: String, message: String)
 }
 
 final class LocationsListScreenViewController: UIViewController {
 
-    private var locations: [LocationsListScreenViewModel.Location] = []
+    private var locations: [Location] = []
 
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -33,9 +34,11 @@ final class LocationsListScreenViewController: UIViewController {
     }
 
     private let viewModel: LocationsListScreenViewModel
+    private let alertDisplayUtility: AlertDisplayable
 
-    init(viewModel: LocationsListScreenViewModel) {
+    init(viewModel: LocationsListScreenViewModel, alertDisplayUtility: AlertDisplayable) {
         self.viewModel = viewModel
+        self.alertDisplayUtility = alertDisplayUtility
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,6 +53,20 @@ final class LocationsListScreenViewController: UIViewController {
 
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        setupNavigationBarButton()
+    }
+
+    func setupNavigationBarButton() {
+        let button = UIButton(frame: .zero)
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        button.setImage(Style.shared.favoriteImage, for: .normal)
+        button.addTarget(self, action:#selector(favoriteButtonPressed), for: .touchUpInside)
+        let barButton = UIBarButtonItem(customView: button)
+        self.navigationItem.rightBarButtonItem = barButton
+    }
+
+    @objc private func favoriteButtonPressed() {
+        viewModel.goToFavoritesPage()
     }
 
     func layoutViews() {
@@ -73,9 +90,13 @@ final class LocationsListScreenViewController: UIViewController {
 }
 
 extension LocationsListScreenViewController: LocationsListScreenViewable {
-    func reloadView(with locationsList: [LocationsListScreenViewModel.Location]) {
+    func reloadView(with locationsList: [Location]) {
         self.locations = locationsList
         self.tableView.reloadData()
+    }
+
+    func showAlert(with title: String, message: String) {
+        self.alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message), parentViewController: self)
     }
 }
 
