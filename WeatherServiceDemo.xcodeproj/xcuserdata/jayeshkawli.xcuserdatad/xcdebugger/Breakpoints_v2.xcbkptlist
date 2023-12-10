@@ -20,5 +20,197 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "892E3B23-BD47-4617-97F2-CA6C5CABF257"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "loadForecastDetailsForCurrentLocation()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "892E3B23-BD47-4617-97F2-CA6C5CABF257 - b23459cd40d99135"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;WeatherService.WSWeatherData, WeatherService.DataLoadError&gt;) -&gt; () in WeatherServiceDemo.TemperatureDetailsScreenViewModel.loadForecastDetailsForCurrentLocation() -&gt; ()"
+                  moduleName = "WeatherServiceDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jayeshkawli/Desktop/WeatherServiceDemo/WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "293">
+               </Location>
+               <Location
+                  uuid = "892E3B23-BD47-4617-97F2-CA6C5CABF257 - a7bbb99fd8c49549"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 (Swift.Result&lt;WeatherService.WSWeatherData, WeatherService.DataLoadError&gt;) -&gt; () in WeatherServiceDemo.TemperatureDetailsScreenViewModel.loadForecastDetailsForCurrentLocation() -&gt; ()"
+                  moduleName = "WeatherServiceDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jayeshkawli/Desktop/WeatherServiceDemo/WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "112">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BABB4642-E2FC-46A1-B57E-0392B175A8B4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "loadForecastDetailsForCurrentLocation()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BABB4642-E2FC-46A1-B57E-0392B175A8B4 - 654ce84b68bba8ce"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WeatherServiceDemo.TemperatureDetailsScreenViewModel.loadForecastDetailsForCurrentLocation() -&gt; ()"
+                  moduleName = "WeatherServiceDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jayeshkawli/Desktop/WeatherServiceDemo/WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "58">
+               </Location>
+               <Location
+                  uuid = "BABB4642-E2FC-46A1-B57E-0392B175A8B4 - b23459cd40d991b1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;WeatherService.WSWeatherData, WeatherService.DataLoadError&gt;) -&gt; () in WeatherServiceDemo.TemperatureDetailsScreenViewModel.loadForecastDetailsForCurrentLocation() -&gt; ()"
+                  moduleName = "WeatherServiceDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jayeshkawli/Desktop/WeatherServiceDemo/WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "195">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5A394552-9662-40C5-BBEC-C2F69DC2579A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../WeatherService/Sources/WeatherService/PublicAPI/WeatherService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "forecastAndCurrentTemperature(for:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "39A57FDC-9862-44A4-9AEA-50B76A8204A5"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "loadForecastDetailsForCurrentLocation()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "41CAC857-C17C-458A-BA3E-B306CC7505FD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "loadForecastDetailsForCurrentLocation()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9BE2A664-E4F0-481C-931C-AE367BF730AF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "convertRemoteWeatherDataToSections(with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C70F45D9-FB18-41C4-81BC-FBEDC522C8C2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeatherServiceDemo/Screens/TemperatureDetailsScreen/TemperatureDetailsScreenViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "refreshView(with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BA587E04-4E78-43AF-A39C-EF8F639279AE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeatherServiceDemo/Screens/FavoriteLocationsListScreen/FavoriteLocationsListScreenViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "removeLocationFromFavorites(at:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

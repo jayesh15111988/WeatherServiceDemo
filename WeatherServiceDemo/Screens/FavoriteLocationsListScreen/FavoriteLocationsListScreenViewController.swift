@@ -8,7 +8,7 @@
 import UIKit
 
 protocol FavoriteLocationsListViewable: AnyObject {
-    func showAlert(with title: String, message: String)
+    func showAlert(with title: String, message: String, actions: [UIAlertAction])
 }
 
 final class FavoriteLocationsListScreenViewController: UIViewController {
@@ -75,13 +75,13 @@ final class FavoriteLocationsListScreenViewController: UIViewController {
     }
 
     @objc private func dismissButtonPressed() {
-        self.dismiss(animated: true)
+        self.viewModel.dismissCurrentView()
     }
 }
 
 extension FavoriteLocationsListScreenViewController: FavoriteLocationsListViewable {
-    func showAlert(with title: String, message: String) {
-        alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message), parentViewController: self)
+    func showAlert(with title: String, message: String, actions: [UIAlertAction]) {
+        alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message, actions: actions), parentViewController: self)
     }
 }
 
@@ -102,7 +102,7 @@ extension FavoriteLocationsListScreenViewController: UITableViewDelegate, UITabl
             guard let self else { return }
 
             guard let currentIndexPath = tableView.indexPath(for: cell) else {
-                self.showAlert(with: "Invalid State", message: "Unfortunately app has reached an invalid state. Please restart the app to continue using the app")
+                self.showAlert(with: "Invalid State", message: "Unfortunately app has reached an invalid state. Please restart the app to continue using the app", actions: [])
                 return
             }
             viewModel.removeLocationFromFavorites(at: currentIndexPath.row)
@@ -120,5 +120,6 @@ extension FavoriteLocationsListScreenViewController: UITableViewDelegate, UITabl
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        self.viewModel.goToLocationForecastDetailsPage(with: viewModel.favoriteLocationModels[indexPath.row])
     }
 }

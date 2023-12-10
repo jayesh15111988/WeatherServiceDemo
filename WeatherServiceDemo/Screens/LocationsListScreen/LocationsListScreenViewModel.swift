@@ -58,6 +58,10 @@ final class LocationsListScreenViewModel {
             router?.navigateToFavoritesPage(with: favoriteLocations)
         }
     }
+
+    func goToLocationForecastDetailsPage(with location: Location) {
+        self.router?.navigateToLocationForecastDetailsPage(with: location)
+    }
 }
 
 final class Location {

@@ -29,4 +29,9 @@ final class LocationsListScreenRouter {
         let favoritesPageRouter = FavoriteLocationsListScreenRouter(navController: self.navController, favoriteLocationModels: favoriteLocations)
         favoritesPageRouter.start()
     }
+
+    func navigateToLocationForecastDetailsPage(with location: Location) {
+        let forecastDetailsPageRouter = TemperatureDetailsScreenRouter(rootViewController: self.navController, selectedLocation: location)
+        forecastDetailsPageRouter.start()
+    }
 }

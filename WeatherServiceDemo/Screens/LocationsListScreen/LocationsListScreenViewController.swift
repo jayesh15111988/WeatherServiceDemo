@@ -133,5 +133,6 @@ extension LocationsListScreenViewController: UITableViewDataSource, UITableViewD
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        viewModel.goToLocationForecastDetailsPage(with: locations[indexPath.row])
     }
 }

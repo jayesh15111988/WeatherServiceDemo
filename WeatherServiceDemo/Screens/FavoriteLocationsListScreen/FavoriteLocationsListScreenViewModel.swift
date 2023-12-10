@@ -5,7 +5,7 @@
 //  Created by Jayesh Kawli on 12/10/23.
 //
 
-import Foundation
+import UIKit
 
 final class FavoriteLocationsListScreenViewModel {
 
@@ -24,5 +24,19 @@ final class FavoriteLocationsListScreenViewModel {
         let favoriteLocationToRemove = favoriteLocationModels[index]
         favoriteLocationToRemove.toggleFavoriteStatus()
         favoriteLocationModels.remove(at: index)
+
+        if favoriteLocationModels.isEmpty {
+            view?.showAlert(with: "No Favorites", message: "You don't have any favorites. Please click on star icon to add location to favorites list", actions: [UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
+                self?.router?.dismiss()
+            })])
+        }
+    }
+
+    func goToLocationForecastDetailsPage(with location: Location) {
+        router?.navigateToLocationForecastDetailsPage(with: location)
+    }
+
+    func dismissCurrentView() {
+        router?.dismiss()
     }
 }

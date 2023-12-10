@@ -25,7 +25,22 @@ final class FavoriteLocationsListScreenRouter: Router {
         let navigationController = UINavigationController(rootViewController: viewController)
 
         viewModel.router = self
+        viewModel.view = viewController
 
         self.rootViewController.present(navigationController, animated: true)
+    }
+
+    func dismiss(completion: (() -> Void)? = nil) {
+        self.rootViewController.presentedViewController?.dismiss(animated: true, completion: completion)
+    }
+
+    func navigateToLocationForecastDetailsPage(with location: Location) {
+        self.dismiss { [weak self] in
+
+            guard let self else { return }
+
+            let forecastDetailsPageRouter = TemperatureDetailsScreenRouter(rootViewController: self.rootViewController, selectedLocation: location)
+            forecastDetailsPageRouter.start()
+        }
     }
 }
