@@ -38,10 +38,12 @@ final class LocationsListScreenViewController: UIViewController {
 
     private let viewModel: LocationsListScreenViewModel
     private let alertDisplayUtility: AlertDisplayable
+    private let coreDataActionsUtility: CoreDataActionsUtility
 
-    init(viewModel: LocationsListScreenViewModel, alertDisplayUtility: AlertDisplayable) {
+    init(viewModel: LocationsListScreenViewModel, alertDisplayUtility: AlertDisplayable, coreDataActionsUtility: CoreDataActionsUtility = CoreDataActionsUtility()) {
         self.viewModel = viewModel
         self.alertDisplayUtility = alertDisplayUtility
+        self.coreDataActionsUtility = coreDataActionsUtility
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -127,6 +129,7 @@ extension LocationsListScreenViewController: UITableViewDataSource, UITableViewD
             guard let self else { return }
 
             location.toggleFavoriteStatus()
+            self.coreDataActionsUtility.toggleFavoriteStatusForLocation(with: location.id)
             self.tableView.reloadRows(at: [IndexPath(item: indexPath.row, section: 0)], with: .automatic)
         }
 

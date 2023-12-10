@@ -6,6 +6,7 @@
 //
 
 import CoreLocation
+import CoreData
 import UIKit
 
 final class LocationsListScreenViewModel {
@@ -23,29 +24,96 @@ final class LocationsListScreenViewModel {
     }
 
     func loadLocations() {
+
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+
         DispatchQueue.global(qos: .userInitiated).async {
-            guard let locationsParentNode: DecodableModel.LocationsParentNode = self.jsonFileReader.getModelFromJSONFile(with: "locations") else {
-                self.view?.reloadView(with: [])
-                return
-            }
 
-            self.locationsListScreenLocationModels = locationsParentNode.locations.map { codableLocation -> Location in
+            let managedContext = appDelegate?.persistentContainer.viewContext
 
-                let coordinates = codableLocation.coordinates
+            let locationsListFromCache = self.locationsListFromCache(with: managedContext)
 
-                return Location(
-                    id: codableLocation.id,
-                    name: codableLocation.name,
-                    coordinates: Location.Coordinates(
-                        latitude: coordinates.latitude,
-                        longitude: coordinates.longitude
+            if !locationsListFromCache.isEmpty {
+                self.locationsListScreenLocationModels = locationsListFromCache
+            } else {
+                guard let locationsParentNode: DecodableModel.LocationsParentNode = self.jsonFileReader.getModelFromJSONFile(with: "locations") else {
+                    self.view?.reloadView(with: [])
+                    return
+                }
+                self.locationsListScreenLocationModels = locationsParentNode.locations.map { codableLocation -> Location in
+
+                    let coordinates = codableLocation.coordinates
+
+                    return Location(
+                        id: codableLocation.id,
+                        name: codableLocation.name,
+                        coordinates: Location.Coordinates(
+                            latitude: coordinates.latitude,
+                            longitude: coordinates.longitude
+                        )
                     )
-                )
+                }
+
+                self.storeLocationsInCache(with: self.locationsListScreenLocationModels, managedContext: managedContext)
             }
 
             DispatchQueue.main.async {
                 self.view?.reloadView(with: self.locationsListScreenLocationModels)
             }
+        }
+    }
+
+    private func locationsListFromCache(with managedContext: NSManagedObjectContext?) -> [Location] {
+
+        guard let managedContext else { return [] }
+
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Location")
+
+        var cachedLocations: [NSManagedObject] = []
+
+        do {
+            cachedLocations = try managedContext.fetch(fetchRequest)
+
+            let finalLocations: [Location] = cachedLocations.map { location -> Location? in
+                guard let id = location.value(forKey: "id") as? String , let isFavorite = location.value(forKey: "isFavorite") as? Bool, let latitude = location.value(forKey: "latitude") as? Double, let longitude = location.value(forKey: "longitude") as? Double, let name = location.value(forKey: "name") as? String else {
+                    return nil
+                }
+                return Location(id: id, name: name, coordinates: .init(latitude: latitude, longitude: longitude), isFavorite: isFavorite)
+            }.compactMap { $0 }
+
+            return finalLocations
+        } catch let error as NSError {
+            //TODO: Add logging
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        return []
+    }
+
+    private func storeLocationsInCache(with locationsList: [Location], managedContext: NSManagedObjectContext?) {
+
+        guard let managedContext else {
+            //TODO: Add error logging
+            return
+        }
+
+        let entity = NSEntityDescription.entity(forEntityName: "Location", in: managedContext)!
+
+        locationsList.forEach { newLocation in
+
+            let location = NSManagedObject(entity: entity, insertInto: managedContext)
+
+            location.setValue(newLocation.id, forKey: "id")
+            location.setValue(newLocation.name, forKey: "name")
+            location.setValue(newLocation.coordinates.latitude, forKey: "latitude")
+            location.setValue(newLocation.coordinates.longitude, forKey: "longitude")
+            location.setValue(newLocation.isFavorite, forKey: "isFavorite")
+        }
+
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            //TODO: add error logging
+            print("Could not save. \(error), \(error.userInfo)")
         }
     }
 

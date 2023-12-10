@@ -76,7 +76,7 @@ final class TemperatureDetailsScreenViewController: UIViewController {
 
     private func loadForecastDetails() {
         self.activityIndicatorViewProvider.start()
-        viewModel.loadForecastDetailsForCurrentLocation()
+        viewModel.loadAndStoreForecastDetailsForCurrentLocation()
     }
 }
 

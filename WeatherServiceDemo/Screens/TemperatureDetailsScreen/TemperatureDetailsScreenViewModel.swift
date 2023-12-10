@@ -42,42 +42,57 @@ final class TemperatureDetailsScreenViewModel {
 
     private let location: Location
     private let weatherService: WeatherService
+    private let coreDataActionsUtility: CoreDataActionsUtility
 
-    init(location: Location, weatherService: WeatherService) {
+    init(location: Location, weatherService: WeatherService, coreDataActionsUtility: CoreDataActionsUtility = CoreDataActionsUtility()) {
         self.location = location
         self.weatherService = weatherService
+        self.coreDataActionsUtility = coreDataActionsUtility
     }
 
-    func loadForecastDetailsForCurrentLocation() {
+    func loadAndStoreForecastDetailsForCurrentLocation() {
         let coordinates = location.coordinates
         self.weatherService.forecastAndCurrentTemperature(for: .coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude)) { [weak self] result in
 
             guard let self else { return }
-            
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let weatherData):
-                    self.convertRemoteWeatherDataToSections(with: weatherData)
-                case .failure(let failure):
+
+            switch result {
+            case .success(let weatherData):
+
+                let sections = self.convertRemoteWeatherDataToSections(with: weatherData)
+
+                DispatchQueue.main.async {
+                    self.view?.refreshView(with: sections)
+                }
+            case .failure(let failure):
+                DispatchQueue.main.async {
                     self.view?.showAlert(with: "Error", message: failure.errorMessageString())
                 }
             }
         }
     }
 
-    private func convertRemoteWeatherDataToSections(with weatherData: WSWeatherData) {
+    private func convertRemoteWeatherDataToSections(with weatherData: WSWeatherData) -> [Section] {
+
+        let currentTemperatureViewModel = CurrentTemperatureViewModel(
+            temperatureCelsius: weatherData.currentTemperature.temperatureCelsius,
+            temperatureFahrenheit: weatherData.currentTemperature.temperatureFahrenheit,
+            lastUpdateDateTimeString: "Last Updated : \(weatherData.currentTemperature.lastUpdateDateTimeString)",
+            unit: .celsius
+        )
+
         let currentTemperatureSection = Section.currentTemperature(
-            viewModel: CurrentTemperatureViewModel(
-                temperature: weatherData.currentTemperature.temperatureCelsius,
-                lastUpdateDateTimeString: "Last Updated : \(weatherData.currentTemperature.lastUpdateDateTimeString)",
-                unit: .celsius)
+            viewModel: currentTemperatureViewModel
         )
 
         let forecastTemperatureViewModels: [ForecastTemperatureViewModel] = weatherData.forecasts.map { forecast -> ForecastTemperatureViewModel in
             return ForecastTemperatureViewModel(
-                minimumTemperature: forecast.minimumTemperatureCelsius,
-                maximumTemperature: forecast.maximumTemperatureCelsius,
-                averageTemperature: forecast.averageTemperatureCelsius,
+                minimumTemperatureCelsius: forecast.minimumTemperatureCelsius,
+                maximumTemperatureCelsius: forecast.maximumTemperatureCelsius,
+                averageTemperatureCelsius: forecast.averageTemperatureCelsius,
+                minimumTemperatureFahrenheit: forecast.minimumTemperatureFahrenheit,
+                maximumTemperatureFahrenheit: forecast.maximumTemperatureFahrenheit,
+                averageTemperatureFahrenheit: forecast.averageTemperatureFahrenheit,
                 lastUpdatedDateString: "Forecast for: \(forecast.dateString)",
                 unit: .celsius
             )
@@ -87,37 +102,69 @@ final class TemperatureDetailsScreenViewModel {
             currentTemperatureSection,
                 .forecastTemperatures(viewModels: forecastTemperatureViewModels)
         ]
-        self.view?.refreshView(with: sections)
+        coreDataActionsUtility.saveTemperatureData(
+            with: location.id,
+            currentTemperatureViewModel: currentTemperatureViewModel,
+            temperatureForecastViewModels: forecastTemperatureViewModels
+        )
+        return sections
     }
 }
 
 struct CurrentTemperatureViewModel {
-    let temperature: Double
+    let temperatureCelsius: Double
+    let temperatureFahrenheit: Double
     let lastUpdateDateTimeString: String
     let unit: TemperatureUnit
 
     var temperatureDisplayValue: String {
-        return "Current Temperature: \(temperature) \(unit.displayTitle)"
+        switch unit {
+        case .celsius:
+            return "Current Temperature: \(temperatureCelsius) \(unit.displayTitle)"
+        case .fahrenheit:
+            return "Current Temperature: \(temperatureFahrenheit) \(unit.displayTitle)"
+        }
     }
 }
 
 struct ForecastTemperatureViewModel {
-    let minimumTemperature: Double
-    let maximumTemperature: Double
-    let averageTemperature: Double
+    
+    let minimumTemperatureCelsius: Double
+    let maximumTemperatureCelsius: Double
+    let averageTemperatureCelsius: Double
+
+    let minimumTemperatureFahrenheit: Double
+    let maximumTemperatureFahrenheit: Double
+    let averageTemperatureFahrenheit: Double
+
     let lastUpdatedDateString: String
     let unit: TemperatureUnit
 
     var minimumTemperatureDisplayValue: String {
-        return "Minimum Temperature: \(minimumTemperature) \(unit.displayTitle)"
+        switch unit {
+        case .celsius:
+            return "Minimum Temperature: \(minimumTemperatureCelsius) \(unit.displayTitle)"
+        case .fahrenheit:
+            return "Minimum Temperature: \(minimumTemperatureFahrenheit) \(unit.displayTitle)"
+        }
     }
 
     var maximumTemperatureDisplayValue: String {
-        return "Maximum Temperature: \(maximumTemperature) \(unit.displayTitle)"
+        switch unit {
+        case .celsius:
+            return "Maximum Temperature: \(maximumTemperatureCelsius) \(unit.displayTitle)"
+        case .fahrenheit:
+            return "Maximum Temperature: \(maximumTemperatureFahrenheit) \(unit.displayTitle)"
+        }
     }
 
     var averageTemperatureDisplayValue: String {
-        return "Average Temperature: \(averageTemperature) \(unit.displayTitle)"
+        switch unit {
+        case .celsius:
+            return "Average Temperature: \(averageTemperatureCelsius) \(unit.displayTitle)"
+        case .fahrenheit:
+            return "Average Temperature: \(averageTemperatureFahrenheit) \(unit.displayTitle)"
+        }
     }
 }
 

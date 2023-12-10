@@ -33,10 +33,12 @@ final class FavoriteLocationsListScreenViewController: UIViewController {
 
     private let viewModel: FavoriteLocationsListScreenViewModel
     private let alertDisplayUtility: AlertDisplayable
+    private let coreDataActionsUtility: CoreDataActionsUtility
 
-    init(viewModel: FavoriteLocationsListScreenViewModel, alertDisplayUtility: AlertDisplayable) {
+    init(viewModel: FavoriteLocationsListScreenViewModel, alertDisplayUtility: AlertDisplayable, coreDataActionsUtility: CoreDataActionsUtility = CoreDataActionsUtility()) {
         self.viewModel = viewModel
         self.alertDisplayUtility = alertDisplayUtility
+        self.coreDataActionsUtility = coreDataActionsUtility
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -106,6 +108,7 @@ extension FavoriteLocationsListScreenViewController: UITableViewDelegate, UITabl
                 return
             }
             viewModel.removeLocationFromFavorites(at: currentIndexPath.row)
+            coreDataActionsUtility.toggleFavoriteStatusForLocation(with: location.id)
             self.removeFavoriteCellFromTableView(for: currentIndexPath)
         }
 
