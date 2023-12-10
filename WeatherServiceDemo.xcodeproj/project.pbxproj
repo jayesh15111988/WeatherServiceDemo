@@ -15,7 +15,6 @@
 		91A8B7CA2B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7C92B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift */; };
 		91A8B7CC2B24EF9C00E35C10 /* TemperatureDetailsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7CB2B24EF9C00E35C10 /* TemperatureDetailsScreenViewModel.swift */; };
 		91A8B7CE2B24EFA600E35C10 /* TemperatureDetailsScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7CD2B24EFA600E35C10 /* TemperatureDetailsScreenRouter.swift */; };
-		91A8B7D12B24EFBF00E35C10 /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = 91A8B7D02B24EFBF00E35C10 /* locations.json */; };
 		91A8B7D32B24EFCE00E35C10 /* LocationsListScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7D22B24EFCE00E35C10 /* LocationsListScreenViewController.swift */; };
 		91A8B7D52B24EFFD00E35C10 /* LocationsListScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7D42B24EFFD00E35C10 /* LocationsListScreenViewModel.swift */; };
 		91A8B7D72B24F00700E35C10 /* LocationsListScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7D62B24F00700E35C10 /* LocationsListScreenRouter.swift */; };
@@ -25,6 +24,8 @@
 		91A8B7E02B24F14900E35C10 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7DF2B24F14900E35C10 /* Router.swift */; };
 		91A8B7E32B24F16A00E35C10 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7E22B24F16A00E35C10 /* AppRouter.swift */; };
 		91A8B7E62B24F2E800E35C10 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7E52B24F2E800E35C10 /* Location.swift */; };
+		91A8B7E92B256BE800E35C10 /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = 91A8B7E82B256BE800E35C10 /* locations.json */; };
+		91A8B7EB2B256DF400E35C10 /* JSONFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7EA2B256DF400E35C10 /* JSONFileReader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +38,6 @@
 		91A8B7C92B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDetailsScreenViewController.swift; sourceTree = "<group>"; };
 		91A8B7CB2B24EF9C00E35C10 /* TemperatureDetailsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDetailsScreenViewModel.swift; sourceTree = "<group>"; };
 		91A8B7CD2B24EFA600E35C10 /* TemperatureDetailsScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDetailsScreenRouter.swift; sourceTree = "<group>"; };
-		91A8B7D02B24EFBF00E35C10 /* locations.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = locations.json; sourceTree = "<group>"; };
 		91A8B7D22B24EFCE00E35C10 /* LocationsListScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListScreenViewController.swift; sourceTree = "<group>"; };
 		91A8B7D42B24EFFD00E35C10 /* LocationsListScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListScreenViewModel.swift; sourceTree = "<group>"; };
 		91A8B7D62B24F00700E35C10 /* LocationsListScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListScreenRouter.swift; sourceTree = "<group>"; };
@@ -47,6 +47,8 @@
 		91A8B7DF2B24F14900E35C10 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		91A8B7E22B24F16A00E35C10 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		91A8B7E52B24F2E800E35C10 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		91A8B7E82B256BE800E35C10 /* locations.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = locations.json; path = WeatherServiceDemo/JSONFileReader/locations.json; sourceTree = SOURCE_ROOT; };
+		91A8B7EA2B256DF400E35C10 /* JSONFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONFileReader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,7 +139,7 @@
 		91A8B7CF2B24EFB100E35C10 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				91A8B7D02B24EFBF00E35C10 /* locations.json */,
+				91A8B7E82B256BE800E35C10 /* locations.json */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -162,7 +164,7 @@
 		91A8B7E42B24F2E000E35C10 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				91A8B7E52B24F2E800E35C10 /* Location.swift */,
+				91A8B7EC2B2574AD00E35C10 /* Codable */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -170,8 +172,17 @@
 		91A8B7E72B24F56200E35C10 /* JSONFileReader */ = {
 			isa = PBXGroup;
 			children = (
+				91A8B7EA2B256DF400E35C10 /* JSONFileReader.swift */,
 			);
 			path = JSONFileReader;
+			sourceTree = "<group>";
+		};
+		91A8B7EC2B2574AD00E35C10 /* Codable */ = {
+			isa = PBXGroup;
+			children = (
+				91A8B7E52B24F2E800E35C10 /* Location.swift */,
+			);
+			path = Codable;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,7 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				914679192B24ABDD00EB468B /* LaunchScreen.storyboard in Resources */,
-				91A8B7D12B24EFBF00E35C10 /* locations.json in Resources */,
+				91A8B7E92B256BE800E35C10 /* locations.json in Resources */,
 				914679162B24ABDD00EB468B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,6 +267,7 @@
 				91A8B7D92B24F08500E35C10 /* FavoriteLocationsListScreenViewController.swift in Sources */,
 				91A8B7E32B24F16A00E35C10 /* AppRouter.swift in Sources */,
 				91A8B7CE2B24EFA600E35C10 /* TemperatureDetailsScreenRouter.swift in Sources */,
+				91A8B7EB2B256DF400E35C10 /* JSONFileReader.swift in Sources */,
 				91A8B7CA2B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift in Sources */,
 				91A8B7E62B24F2E800E35C10 /* Location.swift in Sources */,
 				91A8B7D32B24EFCE00E35C10 /* LocationsListScreenViewController.swift in Sources */,

@@ -8,16 +8,16 @@
 import UIKit
 
 protocol LocationsListScreenViewable: AnyObject {
-    func reloadView(with locationsList: [Location])
+    func reloadView(with locationsList: [LocationsListScreenViewModel.Location])
 }
 
 final class LocationsListScreenViewController: UIViewController {
 
-    private var locations: [Location] = []
+    private var locations: [LocationsListScreenViewModel.Location] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .red
+        viewModel.loadLocations()
     }
 
     private let viewModel: LocationsListScreenViewModel
@@ -33,7 +33,7 @@ final class LocationsListScreenViewController: UIViewController {
 }
 
 extension LocationsListScreenViewController: LocationsListScreenViewable {
-    func reloadView(with locationsList: [Location]) {
+    func reloadView(with locationsList: [LocationsListScreenViewModel.Location]) {
         self.locations = locationsList
     }
 }

@@ -16,7 +16,7 @@ final class LocationsListScreenRouter {
     }
 
     func start() {
-        let locationsListViewModel = LocationsListScreenViewModel()
+        let locationsListViewModel = LocationsListScreenViewModel(jsonFileReader: JSONFileReader())
         let locationsViewController = LocationsListScreenViewController(viewModel: locationsListViewModel)
 
         locationsListViewModel.view = locationsViewController
