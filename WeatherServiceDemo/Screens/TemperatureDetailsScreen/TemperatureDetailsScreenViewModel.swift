@@ -36,6 +36,10 @@ enum Section {
 struct TemperatureInfo {
     let currentTemperatureViewModel: CurrentTemperatureViewModel
     let temperatureForecastViewModels: [ForecastTemperatureViewModel]
+
+    var currentTemperatureUnit: TemperatureUnit {
+        return currentTemperatureViewModel.unit
+    }
 }
 
 final class TemperatureDetailsScreenViewModel {
@@ -47,11 +51,15 @@ final class TemperatureDetailsScreenViewModel {
     let location: Location
     private let coreDataActionsUtility: CoreDataActionsUtility
     private let temperatureInfoUtility: TemperatureInfoUtility
-    let sections: [Section]
+    private(set) var sections: [Section]
 
     var title: String {
         return location.name
     }
+
+    private var unitToSectionsMapping: [TemperatureUnit: [Section]] = [:]
+
+    private var currentTemperatureUnit: TemperatureUnit
 
     init(
         temperatureInfo: TemperatureInfo,
@@ -62,7 +70,17 @@ final class TemperatureDetailsScreenViewModel {
         self.location = location
         self.coreDataActionsUtility = coreDataActionsUtility
         self.temperatureInfoUtility = temperatureInfoUtility
-            self.sections = [.currentTemperature(viewModel: temperatureInfo.currentTemperatureViewModel), .forecastTemperatures(viewModels: temperatureInfo.temperatureForecastViewModels)]
+        self.sections = [
+            .currentTemperature(
+                viewModel: temperatureInfo.currentTemperatureViewModel
+            ),
+                .forecastTemperatures(
+                    viewModels: temperatureInfo.temperatureForecastViewModels
+                )
+        ]
+        currentTemperatureUnit = temperatureInfo.currentTemperatureUnit
+        // Since default unit is celsius, we will use .celsius as an enum value to store sections in the dictionary
+        unitToSectionsMapping[self.temperatureInfo.currentTemperatureUnit] = self.sections
     }
     
     /// A method to toggle favorite status of current location on the favorites screen
@@ -90,6 +108,50 @@ final class TemperatureDetailsScreenViewModel {
         view?.updateFavoriteLocationIcon(location.isFavorite)
         self.view?.showLoadingIndicator(false)
     }
+
+    //A function to toggle temperature units based on the user input
+    func toggleTemperatureUnit(newTemperatureUnit: TemperatureUnit) {
+
+        //If current and new temperature units are same, we don't need to do anything
+        guard currentTemperatureUnit != newTemperatureUnit else {
+            return
+        }
+
+        //Check if sections for new mapping already exist in the dictionary
+
+        let newSections = unitToSectionsMapping[newTemperatureUnit]
+
+        if let newSections {
+            self.sections = newSections
+        } else {
+
+            let currentTemperatureViewModel = self.temperatureInfo.currentTemperatureViewModel
+
+            let newCurrentTemperatureViewModel = CurrentTemperatureViewModel(
+                temperatureCelsius: currentTemperatureViewModel.temperatureCelsius,
+                temperatureFahrenheit: currentTemperatureViewModel.temperatureFahrenheit,
+                lastUpdateDateTimeString: currentTemperatureViewModel.lastUpdateDateTimeString,
+                unit: newTemperatureUnit
+            )
+
+            let currentTemperatureForecastViewModels = self.temperatureInfo.temperatureForecastViewModels
+
+            let newTemperatureForecastViewModels: [ForecastTemperatureViewModel] = currentTemperatureForecastViewModels.map {
+                return ForecastTemperatureViewModel(minimumTemperatureCelsius: $0.minimumTemperatureCelsius, maximumTemperatureCelsius: $0.maximumTemperatureCelsius, averageTemperatureCelsius: $0.averageTemperatureCelsius, minimumTemperatureFahrenheit: $0.minimumTemperatureFahrenheit, maximumTemperatureFahrenheit: $0.maximumTemperatureFahrenheit, averageTemperatureFahrenheit: $0.averageTemperatureFahrenheit, lastUpdatedDateString: $0.lastUpdatedDateString, unit: newTemperatureUnit)
+            }
+
+            //Create new sections for new temperature unit
+            let newSections: [Section] = [.currentTemperature(viewModel: newCurrentTemperatureViewModel), .forecastTemperatures(viewModels: newTemperatureForecastViewModels)]
+
+            //Perform mapping
+            unitToSectionsMapping[newTemperatureUnit] = newSections
+
+            //Set sections
+            self.sections = newSections
+        }
+        self.view?.reloadTableView()
+        self.currentTemperatureUnit = newTemperatureUnit
+    }
 }
 
 struct CurrentTemperatureViewModel {
@@ -105,6 +167,10 @@ struct CurrentTemperatureViewModel {
         case .fahrenheit:
             return "Current Temperature: \(temperatureFahrenheit) \(unit.displayTitle)"
         }
+    }
+
+    func reverseUnit() -> TemperatureUnit {
+        return self.unit == .celsius ? .fahrenheit : .celsius
     }
 }
 
@@ -147,9 +213,13 @@ struct ForecastTemperatureViewModel {
             return "Average Temperature: \(averageTemperatureFahrenheit) \(unit.displayTitle)"
         }
     }
+
+    func reverseUnit() -> TemperatureUnit {
+        return self.unit == .celsius ? .fahrenheit : .celsius
+    }
 }
 
-enum TemperatureUnit {
+enum TemperatureUnit: Int {
     case celsius
     case fahrenheit
 

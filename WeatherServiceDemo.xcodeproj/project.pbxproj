@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -37,6 +37,7 @@
 		91A8B8082B25FF3700E35C10 /* WeatherData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B8062B25FF3700E35C10 /* WeatherData.xcdatamodeld */; };
 		91A8B82F2B260DEE00E35C10 /* CoreDataActionsUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B82E2B260DEE00E35C10 /* CoreDataActionsUtility.swift */; };
 		91A8B8312B26489600E35C10 /* TemperatureInfoUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B8302B26489600E35C10 /* TemperatureInfoUtility.swift */; };
+		91A8B8342B26E30700E35C10 /* WeatherService in Frameworks */ = {isa = PBXBuildFile; productRef = 91A8B8332B26E30700E35C10 /* WeatherService */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91664DEA2B24D65300719B2D /* WeatherService in Frameworks */,
+				91A8B8342B26E30700E35C10 /* WeatherService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +326,7 @@
 			name = WeatherServiceDemo;
 			packageProductDependencies = (
 				91664DE92B24D65300719B2D /* WeatherService */,
+				91A8B8332B26E30700E35C10 /* WeatherService */,
 			);
 			productName = WeatherServiceDemo;
 			productReference = 914679092B24ABD800EB468B /* WeatherServiceDemo.app */;
@@ -354,7 +357,7 @@
 			);
 			mainGroup = 914679002B24ABD800EB468B;
 			packageReferences = (
-				91664DE82B24D65300719B2D /* XCLocalSwiftPackageReference "../WeatherService" */,
+				91A8B8322B26E30700E35C10 /* XCRemoteSwiftPackageReference "WeatherService" */,
 			);
 			productRefGroup = 9146790A2B24ABD800EB468B /* Products */;
 			projectDirPath = "";
@@ -622,16 +625,25 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		91664DE82B24D65300719B2D /* XCLocalSwiftPackageReference "../WeatherService" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../WeatherService;
+/* Begin XCRemoteSwiftPackageReference section */
+		91A8B8322B26E30700E35C10 /* XCRemoteSwiftPackageReference "WeatherService" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jayesh15111988/WeatherService";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		91664DE92B24D65300719B2D /* WeatherService */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = WeatherService;
+		};
+		91A8B8332B26E30700E35C10 /* WeatherService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91A8B8322B26E30700E35C10 /* XCRemoteSwiftPackageReference "WeatherService" */;
 			productName = WeatherService;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -5,6 +5,7 @@
 //  Created by Jayesh Kawli on 12/10/23.
 //
 
+import OSLog
 import UIKit
 
 /// A protocol for transferring actions from view model to the view
@@ -12,11 +13,23 @@ protocol TemperatureDetailsScreenViewable: AnyObject {
     func showAlert(with title: String, message: String)
     func updateFavoriteLocationIcon(_ isFavorite: Bool)
     func showLoadingIndicator(_ showing: Bool)
+    func reloadTableView()
 }
 
 final class TemperatureDetailsScreenViewController: UIViewController {
 
     private let activityIndicatorViewProvider = ActivityIndicatorViewProvider()
+
+    private let segmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl(frame: .zero)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        return segmentedControl
+    }()
+
+    static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!,
+        category: String(describing: TemperatureDetailsScreenViewController.self)
+    )
 
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -39,7 +52,7 @@ final class TemperatureDetailsScreenViewController: UIViewController {
         layoutViews()
         registerCells()
         setupNavigationBarButton()
-        displayForecastDetails()
+        reloadTableView()
     }
 
     private let viewModel: TemperatureDetailsScreenViewModel
@@ -59,17 +72,44 @@ final class TemperatureDetailsScreenViewController: UIViewController {
         self.title = viewModel.title
         self.view.backgroundColor = Style.shared.backgroundColor
         self.view.addSubview(tableView)
+        self.view.addSubview(segmentedControl)
 
         self.activityIndicatorViewProvider.addToSuperViewAndConstrain(to: self.view)
         self.tableView.delegate = self
         self.tableView.dataSource = self
 
+        segmentedControl.insertSegment(withTitle: TemperatureUnit.celsius.displayTitle, at: TemperatureUnit.celsius.rawValue, animated: false)
+
+        segmentedControl.insertSegment(withTitle: TemperatureUnit.fahrenheit.displayTitle, at: TemperatureUnit.fahrenheit.rawValue, animated: false)
+
+        segmentedControl.selectedSegmentIndex = TemperatureUnit.celsius.rawValue
+
+        self.view.addSubview(segmentedControl)
+        segmentedControl.addTarget(self, action: #selector(segmentedControlTapped), for: .valueChanged)
+
         updateFavoriteLocationIcon(viewModel.location.isFavorite)
     }
 
+    @objc private func segmentedControlTapped() {
+        let selectedIndex = segmentedControl.selectedSegmentIndex
+
+        guard let selectedTemperatureUnit = TemperatureUnit(rawValue: selectedIndex) else {
+            Self.logger.error("App has allowed user to choose an invalid segment control index. App has entered an invalid state. Unable to proceed with state and UI update operation")
+            return
+        }
+        self.viewModel.toggleTemperatureUnit(newTemperatureUnit: selectedTemperatureUnit)
+    }
+
     private func layoutViews() {
+
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            segmentedControl.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            segmentedControl.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+        ])
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -82,10 +122,6 @@ final class TemperatureDetailsScreenViewController: UIViewController {
 
         tableView.register(CurrentTemperatureDetailsTableViewCell.self, forCellReuseIdentifier: CurrentTemperatureDetailsTableViewCell.reuseIdentifier)
         tableView.register(ForecastTemperatureDetailsTableViewCell.self, forCellReuseIdentifier: ForecastTemperatureDetailsTableViewCell.reuseIdentifier)
-    }
-
-    private func displayForecastDetails() {
-        self.tableView.reloadData()
     }
 
     private func setupNavigationBarButton() {
@@ -121,6 +157,10 @@ extension TemperatureDetailsScreenViewController: TemperatureDetailsScreenViewab
         } else {
             self.activityIndicatorViewProvider.stop()
         }
+    }
+
+    func reloadTableView() {
+        self.tableView.reloadData()
     }
 }
 
