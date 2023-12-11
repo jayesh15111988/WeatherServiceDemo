@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "weatherservice",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jayesh15111988/WeatherService",
+      "state" : {
+        "revision" : "92998a641e5d494f148831c1759ed4de9d5122ee",
+        "version" : "2.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}

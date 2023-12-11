@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		914679162B24ABDD00EB468B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 914679152B24ABDD00EB468B /* Assets.xcassets */; };
 		914679192B24ABDD00EB468B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 914679172B24ABDD00EB468B /* LaunchScreen.storyboard */; };
 		91664DEA2B24D65300719B2D /* WeatherService in Frameworks */ = {isa = PBXBuildFile; productRef = 91664DE92B24D65300719B2D /* WeatherService */; };
+		916784EA2B273DD0007B9135 /* WeatherService in Frameworks */ = {isa = PBXBuildFile; productRef = 916784E92B273DD0007B9135 /* WeatherService */; };
 		91A8B7CA2B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7C92B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift */; };
 		91A8B7CC2B24EF9C00E35C10 /* TemperatureDetailsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7CB2B24EF9C00E35C10 /* TemperatureDetailsScreenViewModel.swift */; };
 		91A8B7CE2B24EFA600E35C10 /* TemperatureDetailsScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7CD2B24EFA600E35C10 /* TemperatureDetailsScreenRouter.swift */; };
@@ -83,6 +84,7 @@
 				9108EFE52B27120A00FEBAD2 /* WeatherService in Frameworks */,
 				91664DEA2B24D65300719B2D /* WeatherService in Frameworks */,
 				911788A82B26F40E00015016 /* WeatherService in Frameworks */,
+				916784EA2B273DD0007B9135 /* WeatherService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,6 +332,7 @@
 				91664DE92B24D65300719B2D /* WeatherService */,
 				911788A72B26F40E00015016 /* WeatherService */,
 				9108EFE42B27120A00FEBAD2 /* WeatherService */,
+				916784E92B273DD0007B9135 /* WeatherService */,
 			);
 			productName = WeatherServiceDemo;
 			productReference = 914679092B24ABD800EB468B /* WeatherServiceDemo.app */;
@@ -360,7 +363,7 @@
 			);
 			mainGroup = 914679002B24ABD800EB468B;
 			packageReferences = (
-				9108EFE32B27120900FEBAD2 /* XCLocalSwiftPackageReference "../WeatherService" */,
+				916784E82B273DD0007B9135 /* XCRemoteSwiftPackageReference "WeatherService" */,
 			);
 			productRefGroup = 9146790A2B24ABD800EB468B /* Products */;
 			projectDirPath = "";
@@ -628,12 +631,16 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		9108EFE32B27120900FEBAD2 /* XCLocalSwiftPackageReference "../WeatherService" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../WeatherService;
+/* Begin XCRemoteSwiftPackageReference section */
+		916784E82B273DD0007B9135 /* XCRemoteSwiftPackageReference "WeatherService" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jayesh15111988/WeatherService";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		9108EFE42B27120A00FEBAD2 /* WeatherService */ = {
@@ -646,6 +653,11 @@
 		};
 		91664DE92B24D65300719B2D /* WeatherService */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = WeatherService;
+		};
+		916784E92B273DD0007B9135 /* WeatherService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 916784E82B273DD0007B9135 /* XCRemoteSwiftPackageReference "WeatherService" */;
 			productName = WeatherService;
 		};
 /* End XCSwiftPackageProductDependency section */
