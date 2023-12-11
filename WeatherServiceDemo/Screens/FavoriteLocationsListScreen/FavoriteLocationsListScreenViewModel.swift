@@ -54,7 +54,7 @@ final class FavoriteLocationsListScreenViewModel {
         self.view?.showLoadingIndicator(true)
 
         //Try to load weather data for the location
-        self.temperatureInfoUtility.loadAndSaveWeatherInformation(with: location) { result in
+        self.temperatureInfoUtility.loadWeatherInformation(with: location) { result in
 
             DispatchQueue.main.async {
                 switch result {

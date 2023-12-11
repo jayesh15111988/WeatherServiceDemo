@@ -120,7 +120,7 @@ final class LocationsListScreenViewModel {
     func goToLocationForecastDetailsPage(with location: Location) {
         self.view?.showLoadingIndicator(true)
 
-        self.temperatureInfoUtility.loadAndSaveWeatherInformation(with: location) { result in
+        self.temperatureInfoUtility.loadWeatherInformation(with: location) { result in
 
             DispatchQueue.main.async {
                 switch result {
@@ -201,7 +201,7 @@ final class LocationsListScreenViewModel {
             return
         }
 
-        self.temperatureInfoUtility.loadAndSaveWeatherInformation(with: location) { result in
+        self.temperatureInfoUtility.loadWeatherInformation(with: location) { result in
 
             switch result {
             case .success(let cachedLocationInfoData):
