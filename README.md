@@ -30,7 +30,7 @@ This project aims to develop a demo iOS application to demonstrate the usage of 
 
 
 
-1. Locations list screen
+### 1. Locations list screen
 
 The screen shows the list of predefined locations. Currently, they come from local JSON file and are subsequently cached. In the future change, they can also be fetched from the remote URL
 
@@ -42,7 +42,7 @@ The screen shows the list of predefined locations. Currently, they come from loc
 
 
 
-2. Favorites list screen
+### 2. Favorites list screen
 
 The screen that shows the favorited locations
 
@@ -54,10 +54,9 @@ The screen that shows the favorited locations
 
 
 
-4. Temperature Forecast Details screen
+### 3. Temperature Forecast Details screen
 
-A screen that shows the current temperature and the temperatures for the next 7 days. This includes minimum, maximum, and average temperature
-
+A screen that shows the current temperature and the temperatures for the next 7 days. This includes minimum, maximum, and average temperature. Alternatively, users can also switch between celsius/fahrenheit units
 
 
 ![Simulator Screenshot - iPhone 15 Pro - 2023-12-11 at 15 09 33](https://github.com/jayesh15111988/WeatherServiceDemo/assets/6687735/92875b25-6e52-4d9c-9709-d1d6b74cb803)
@@ -74,9 +73,7 @@ Also, whenever the user favorites a location, the current and forecasted tempera
 
 
 
-The bookmarked location is automatically cached and is removed when the user unbookmarks the item. While getting a forecast, the app first tries to download data from the network.
-
-If that call fails due to an unavailable network, the app retrieves the forecast data from the previously stored cache.
+The bookmarked location is automatically cached and is removed when the user unbookmarks the item. While getting a forecast, the app first tries to download data from the network. If that call fails due to an unavailable network, the app retrieves the forecast data from the previously stored cache.
 
 
 
@@ -90,7 +87,7 @@ The view model is responsible for getting models from the `WeatherService` API a
 
 I ruled out MVC due to it polluting the view layer and making it difficult to just test the business logic due to intermixing with a view. 
 
-I also thought about VIPER architecture, but it seemed an overkill for a feature this small given the boilerplate code it tends to add. 
+I also thought about VIPER architecture, but I avoided it due to the unnecessary boilerplate code during implementation.
 
 Finally, I decided to use MVVM as a middle ground between these two possible alternatives.
 
@@ -142,7 +139,7 @@ I performed the manual testing on the app before submission handling all feature
 
 ### UI/Automated tests
 
-I haven't added any UI/Automated tests due to time limitations, but given the extra time, I will write extra tests to verify the E2E app flow
+I haven't added any UI/Automated tests due to time limitations. If I have extra time, I will write extra E2E tests to verify the app flow
 
 
 
