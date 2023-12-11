@@ -36,6 +36,7 @@
 		91A8B8042B25C8AC00E35C10 /* ActivityIndicatorViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B8032B25C8AC00E35C10 /* ActivityIndicatorViewProvider.swift */; };
 		91A8B8082B25FF3700E35C10 /* WeatherData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B8062B25FF3700E35C10 /* WeatherData.xcdatamodeld */; };
 		91A8B82F2B260DEE00E35C10 /* CoreDataActionsUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B82E2B260DEE00E35C10 /* CoreDataActionsUtility.swift */; };
+		91A8B8312B26489600E35C10 /* TemperatureInfoUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B8302B26489600E35C10 /* TemperatureInfoUtility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		91A8B8032B25C8AC00E35C10 /* ActivityIndicatorViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorViewProvider.swift; sourceTree = "<group>"; };
 		91A8B8072B25FF3700E35C10 /* WeatherData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WeatherData.xcdatamodel; sourceTree = "<group>"; };
 		91A8B82E2B260DEE00E35C10 /* CoreDataActionsUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataActionsUtility.swift; sourceTree = "<group>"; };
+		91A8B8302B26489600E35C10 /* TemperatureInfoUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureInfoUtility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				91A8B82E2B260DEE00E35C10 /* CoreDataActionsUtility.swift */,
+				91A8B8302B26489600E35C10 /* TemperatureInfoUtility.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 				91A8B7D52B24EFFD00E35C10 /* LocationsListScreenViewModel.swift in Sources */,
 				91A8B82F2B260DEE00E35C10 /* CoreDataActionsUtility.swift in Sources */,
 				91A8B7CC2B24EF9C00E35C10 /* TemperatureDetailsScreenViewModel.swift in Sources */,
+				91A8B8312B26489600E35C10 /* TemperatureInfoUtility.swift in Sources */,
 				9146790F2B24ABD800EB468B /* SceneDelegate.swift in Sources */,
 				91A8B7E02B24F14900E35C10 /* Router.swift in Sources */,
 			);

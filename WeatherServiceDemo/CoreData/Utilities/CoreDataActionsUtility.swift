@@ -8,18 +8,28 @@
 import CoreData
 import UIKit
 
+import OSLog
+
 final class CoreDataActionsUtility {
 
     let appDelegate: AppDelegate
 
-    init() {
-        self.appDelegate = UIApplication.shared.delegate as! AppDelegate
+    static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!,
+        category: String(describing: CoreDataActionsUtility.self)
+    )
+
+    init(appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate) {
+        self.appDelegate = appDelegate
     }
-
+    
+    /// A method to update favorite status of selected location in the core data cache
+    /// - Parameter id: The id of passed location
     func toggleFavoriteStatusForLocation(with id: String) {
-
-        DispatchQueue.global().async {
-            let managedContext = self.appDelegate.persistentContainer.viewContext
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            
+            let managedContext = self.appDelegate.persistentContainer.newBackgroundContext()
 
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Location")
             fetchRequest.predicate = NSPredicate(format: "id == %@", id)
@@ -33,100 +43,9 @@ final class CoreDataActionsUtility {
                     try managedContext.save()
                 }
             } catch let error as NSError {
-                //TODO: Add logging
-                print(error.localizedDescription)
-            }
-        }
-    }
-
-    func saveTemperatureData(
-        with locationId: String,
-        currentTemperatureViewModel: CurrentTemperatureViewModel,
-        temperatureForecastViewModels: [ForecastTemperatureViewModel]
-    ) {
-        DispatchQueue.global().async {
-            let managedContext = self.appDelegate.persistentContainer.viewContext
-
-            self.saveCurrentTemperatureViewModel(
-                with: currentTemperatureViewModel,
-                context: managedContext,
-                locationId: locationId
-            )
-
-            self.saveTemperatureForecastViewModel(
-                with: temperatureForecastViewModels,
-                context: managedContext,
-                locationId: locationId
-            )
-        }
-    }
-
-    private func saveCurrentTemperatureViewModel(with viewModel: CurrentTemperatureViewModel, context: NSManagedObjectContext, locationId: String) {
-
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CurrentTemperature")
-        fetchRequest.predicate = NSPredicate(format: "locationId == %@", locationId)
-
-        do {
-            let cachedCurrentTemperatureViewModels = try context.fetch(fetchRequest)
-
-            guard cachedCurrentTemperatureViewModels.isEmpty else {
-                return
+                Self.logger.error("An error occurred while trying to update favorite status of location with id \(id). Error details \(error.localizedDescription)")
             }
 
-            let entity = NSEntityDescription.entity(forEntityName: "CurrentTemperature", in: context)!
-
-            let currentTemperature = NSManagedObject(entity: entity, insertInto: context)
-
-            currentTemperature.setValue(viewModel.lastUpdateDateTimeString, forKey: "lastUpdatedDateTimeString")
-            currentTemperature.setValue(locationId, forKey: "locationId")
-            currentTemperature.setValue(viewModel.temperatureCelsius, forKey: "temperatureCelsius")
-            currentTemperature.setValue(viewModel.temperatureFahrenheit, forKey: "temperatureFahrenheit")
-
-            try context.save()
-
-        } catch let error as NSError {
-            //TODO: Add logging
-            print(error.localizedDescription)
-        }
-    }
-
-    private func saveTemperatureForecastViewModel(with viewModels: [ForecastTemperatureViewModel], context: NSManagedObjectContext, locationId: String) {
-
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ForecastTemperature")
-
-        fetchRequest.predicate = NSPredicate(format: "locationId == %@", locationId)
-
-        do {
-            let cachedTemperatureForecastViewModels = try context.fetch(fetchRequest)
-
-            guard cachedTemperatureForecastViewModels.isEmpty else {
-                return
-            }
-
-            for (index, viewModel) in viewModels.enumerated() {
-
-                let entity = NSEntityDescription.entity(forEntityName: "ForecastTemperature", in: context)!
-
-                let temperatureForecast = NSManagedObject(entity: entity, insertInto: context)
-
-                temperatureForecast.setValue(locationId, forKey: "locationId")
-
-                temperatureForecast.setValue(viewModel.averageTemperatureCelsius, forKey: "averageTemperatureCelsius")
-                temperatureForecast.setValue(viewModel.averageTemperatureFahrenheit, forKey: "averageTemperatureFahrenheit")
-                temperatureForecast.setValue(viewModel.lastUpdatedDateString, forKey: "lastUpdatedDateString")
-                temperatureForecast.setValue(viewModel.maximumTemperatureCelsius, forKey: "maximumTemperatureCelsius")
-
-                temperatureForecast.setValue(viewModel.maximumTemperatureFahrenheit, forKey: "maximumTemperatureFahrenheit")
-                temperatureForecast.setValue(viewModel.minimumTemperatureCelsius, forKey: "minimumTemperatureCelsius")
-                temperatureForecast.setValue(viewModel.minimumTemperatureFahrenheit, forKey: "minimumTemperatureFahrenheit")
-                temperatureForecast.setValue(index, forKey: "sequence")
-            }
-
-            try context.save()
-
-        } catch let error as NSError {
-            //TODO: Add logging
-            print(error.localizedDescription)
         }
     }
 }

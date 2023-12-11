@@ -7,6 +7,9 @@
 
 import UIKit
 
+import WeatherService
+
+/// An app router to initialize app routing beginning
 final class AppRouter: Router {
     
     private let window: UIWindow
@@ -19,7 +22,7 @@ final class AppRouter: Router {
     }
 
     func start() {
-        let locationsScreenRouter = LocationsListScreenRouter(navController: self.rootViewController)
+        let locationsScreenRouter = LocationsListScreenRouter(navController: self.rootViewController, temperatureInfoUtility: TemperatureInfoUtility(weatherService: WeatherService()))
         locationsScreenRouter.start()
 
         self.window.rootViewController = rootViewController

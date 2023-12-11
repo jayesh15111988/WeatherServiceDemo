@@ -42,4 +42,3 @@ public final class Style {
         UIColor(named: "sectionHeaderBackground", in: self.bundle, compatibleWith: nil)!
     }()
 }
-

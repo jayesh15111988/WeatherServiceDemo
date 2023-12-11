@@ -8,14 +8,15 @@
 import UIKit
 
 class CurrentTemperatureDetailsTableViewCell: UITableViewCell {
-
+    
+    /// Style Constants
     private enum Constants {
         static let horizontalPadding: CGFloat = 8.0
         static let verticalPadding: CGFloat = 8.0
         static let verticalSpacing: CGFloat = 8.0
     }
 
-    let lastUpdatedDateTimeLabel: UILabel = {
+    private let lastUpdatedDateTimeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -23,7 +24,7 @@ class CurrentTemperatureDetailsTableViewCell: UITableViewCell {
         return label
     }()
 
-    let currentTemperatureLabel: UILabel = {
+    private let currentTemperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -45,6 +46,11 @@ class CurrentTemperatureDetailsTableViewCell: UITableViewCell {
         super.prepareForReuse()
         lastUpdatedDateTimeLabel.text = nil
         currentTemperatureLabel.text = nil
+    }
+
+    func configure(with viewModel: CurrentTemperatureViewModel) {
+        self.lastUpdatedDateTimeLabel.text = viewModel.lastUpdateDateTimeString
+        self.currentTemperatureLabel.text = viewModel.temperatureDisplayValue
     }
 
     // MARK: Private methods
@@ -69,10 +75,5 @@ class CurrentTemperatureDetailsTableViewCell: UITableViewCell {
             lastUpdatedDateTimeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.horizontalPadding),
             lastUpdatedDateTimeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.verticalPadding),
         ])
-    }
-
-    func configure(with viewModel: CurrentTemperatureViewModel) {
-        self.lastUpdatedDateTimeLabel.text = viewModel.lastUpdateDateTimeString
-        self.currentTemperatureLabel.text = viewModel.temperatureDisplayValue
     }
 }

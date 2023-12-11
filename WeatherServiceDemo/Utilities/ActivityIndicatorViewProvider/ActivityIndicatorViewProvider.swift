@@ -7,9 +7,10 @@
 
 import UIKit
 
-class ActivityIndicatorViewProvider {
+/// A class to perform loading indicator actions
+final class ActivityIndicatorViewProvider {
 
-    let activityIndicatorView: UIActivityIndicatorView
+    private let activityIndicatorView: UIActivityIndicatorView
 
     init() {
         let activityIndicatorView = UIActivityIndicatorView(frame: .zero)
@@ -19,7 +20,9 @@ class ActivityIndicatorViewProvider {
         activityIndicatorView.hidesWhenStopped = true
         self.activityIndicatorView = activityIndicatorView
     }
-
+    
+    /// A method to add activityIndicatorView to passed super view
+    /// - Parameter superView: A superView to which we need to add activityIndicatorView
     func addToSuperViewAndConstrain(to superView: UIView) {
         superView.addSubview(activityIndicatorView)
         NSLayoutConstraint.activate([
@@ -27,11 +30,13 @@ class ActivityIndicatorViewProvider {
             activityIndicatorView.centerYAnchor.constraint(equalTo: superView.centerYAnchor)
         ])
     }
-
+    
+    /// A method to start activityIndicator spinning
     func start() {
         activityIndicatorView.startAnimating()
     }
 
+    /// A method to stop activityIndicator spinning
     func stop() {
         activityIndicatorView.stopAnimating()
     }

@@ -9,9 +9,12 @@ import UIKit
 
 protocol FavoriteLocationsListViewable: AnyObject {
     func showAlert(with title: String, message: String, actions: [UIAlertAction])
+    func showLoadingIndicator(_ showing: Bool)
 }
 
 final class FavoriteLocationsListScreenViewController: UIViewController {
+
+    private let activityIndicatorViewProvider = ActivityIndicatorViewProvider()
 
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -46,7 +49,8 @@ final class FavoriteLocationsListScreenViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupViews() {
+    //MARK: Private methods
+    private func setupViews() {
         self.view.backgroundColor = Style.shared.backgroundColor
         self.view.addSubview(tableView)
         self.title = viewModel.title
@@ -55,7 +59,7 @@ final class FavoriteLocationsListScreenViewController: UIViewController {
         self.tableView.dataSource = self
     }
 
-    func layoutViews() {
+    private func layoutViews() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -64,15 +68,15 @@ final class FavoriteLocationsListScreenViewController: UIViewController {
         ])
     }
 
-    func registerCells() {
+    private func registerCells() {
         tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: LocationTableViewCell.reuseIdentifier)
     }
 
-    func refreshViewWithFavoriteLocations() {
+    private func refreshViewWithFavoriteLocations() {
         self.tableView.reloadData()
     }
 
-    func setupNavigationBarButton() {
+    private func setupNavigationBarButton() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Dismiss", style: .done, target: self, action: #selector(dismissButtonPressed))
     }
 
@@ -84,6 +88,14 @@ final class FavoriteLocationsListScreenViewController: UIViewController {
 extension FavoriteLocationsListScreenViewController: FavoriteLocationsListViewable {
     func showAlert(with title: String, message: String, actions: [UIAlertAction]) {
         alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message, actions: actions), parentViewController: self)
+    }
+
+    func showLoadingIndicator(_ showing: Bool) {
+        if showing {
+            self.activityIndicatorViewProvider.start()
+        } else {
+            self.activityIndicatorViewProvider.stop()
+        }
     }
 }
 

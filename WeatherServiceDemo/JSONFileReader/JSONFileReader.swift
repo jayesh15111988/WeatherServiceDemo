@@ -13,10 +13,6 @@ protocol JSONFileReadable {
 
 final class JSONFileReader: JSONFileReadable {
 
-//    init() {
-//        //no-op
-//    }
-
     /// A method to get the specified Decodable model after converting local JSON data into model object
     /// - Parameter name: Name of the JSON file to read the data from
     /// - Returns: A specified Decodable model objet

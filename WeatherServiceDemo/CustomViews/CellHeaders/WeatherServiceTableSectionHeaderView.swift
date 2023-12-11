@@ -41,7 +41,14 @@ final public class WeatherServiceTableSectionHeaderView: UITableViewHeaderFooter
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// A method to configure header with provided view model
+    /// - Parameter viewModel: A instance of WeatherServiceTableSectionHeaderView.ViewModel to decorate header view with title
+    func configure(with viewModel: ViewModel) {
+        self.titleLabel.text = viewModel.title
+    }
+
     //MARK: Private methods
+
     private func setupViews() {
         self.contentView.addSubview(titleLabel)
         self.contentView.backgroundColor = Style.shared.backgroundColor
@@ -54,12 +61,6 @@ final public class WeatherServiceTableSectionHeaderView: UITableViewHeaderFooter
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.Padding.vertical),
             titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Padding.vertical)
         ])
-    }
-
-    /// A method to configure header with provided view model
-    /// - Parameter viewModel: A instance of LogoSelectorTableSectionHeaderView.ViewModel to decorate header view
-    public func configure(with viewModel: ViewModel) {
-        self.titleLabel.text = viewModel.title
     }
 }
 

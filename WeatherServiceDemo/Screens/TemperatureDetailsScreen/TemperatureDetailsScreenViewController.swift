@@ -7,9 +7,11 @@
 
 import UIKit
 
+/// A protocol for transferring actions from view model to the view
 protocol TemperatureDetailsScreenViewable: AnyObject {
     func showAlert(with title: String, message: String)
-    func refreshView(with sections: [Section])
+    func updateFavoriteLocationIcon(_ isFavorite: Bool)
+    func showLoadingIndicator(_ showing: Bool)
 }
 
 final class TemperatureDetailsScreenViewController: UIViewController {
@@ -25,17 +27,23 @@ final class TemperatureDetailsScreenViewController: UIViewController {
         return tableView
     }()
 
+    private let favoriteButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        return button
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         layoutViews()
         registerCells()
-        loadForecastDetails()
+        setupNavigationBarButton()
+        displayForecastDetails()
     }
 
     private let viewModel: TemperatureDetailsScreenViewModel
     private let alertDisplayUtility: AlertDisplayable
-    var sections: [Section] = []
 
     init(viewModel: TemperatureDetailsScreenViewModel, alertDisplayUtility: AlertDisplayable) {
         self.viewModel = viewModel
@@ -55,6 +63,8 @@ final class TemperatureDetailsScreenViewController: UIViewController {
         self.activityIndicatorViewProvider.addToSuperViewAndConstrain(to: self.view)
         self.tableView.delegate = self
         self.tableView.dataSource = self
+
+        updateFavoriteLocationIcon(viewModel.location.isFavorite)
     }
 
     private func layoutViews() {
@@ -74,38 +84,59 @@ final class TemperatureDetailsScreenViewController: UIViewController {
         tableView.register(ForecastTemperatureDetailsTableViewCell.self, forCellReuseIdentifier: ForecastTemperatureDetailsTableViewCell.reuseIdentifier)
     }
 
-    private func loadForecastDetails() {
-        self.activityIndicatorViewProvider.start()
-        viewModel.loadAndStoreForecastDetailsForCurrentLocation()
+    private func displayForecastDetails() {
+        self.tableView.reloadData()
+    }
+
+    private func setupNavigationBarButton() {
+        favoriteButton.addTarget(self, action:#selector(favoriteButtonPressed), for: .touchUpInside)
+        let barButton = UIBarButtonItem(customView: favoriteButton)
+        self.navigationItem.rightBarButtonItem = barButton
+    }
+
+    @objc private func favoriteButtonPressed() {
+        viewModel.toggleLocationFavoriteStatus()
     }
 }
 
+//MARK: TemperatureDetailsScreenViewable protocol conformance
 extension TemperatureDetailsScreenViewController: TemperatureDetailsScreenViewable {
+    
     func showAlert(with title: String, message: String) {
         self.activityIndicatorViewProvider.stop()
         alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message), parentViewController: self)
     }
 
-    func refreshView(with sections: [Section]) {
-        self.activityIndicatorViewProvider.stop()
-        self.sections = sections
-        self.tableView.reloadData()
+    func updateFavoriteLocationIcon(_ isFavorite: Bool) {
+        if isFavorite {
+            favoriteButton.setImage(Style.shared.favoriteImage, for: .normal)
+        } else {
+            favoriteButton.setImage(Style.shared.nonFavoriteImage, for: .normal)
+        }
+    }
+
+    func showLoadingIndicator(_ showing: Bool) {
+        if showing {
+            self.activityIndicatorViewProvider.start()
+        } else {
+            self.activityIndicatorViewProvider.stop()
+        }
     }
 }
 
 extension TemperatureDetailsScreenViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return viewModel.sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].rowCount
+        return viewModel.sections[section].rowCount
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let currentSection = sections[indexPath.section]
+        let currentSection = viewModel.sections[indexPath.section]
 
         switch currentSection {
         case .currentTemperature(let viewModel):
@@ -129,7 +160,7 @@ extension TemperatureDetailsScreenViewController: UITableViewDelegate, UITableVi
             fatalError("Could not find expected custom header view class WeatherServiceTableSectionHeaderView. Expected to find the reusable header view WeatherServiceTableSectionHeaderView for sections header")
         }
 
-        let currentSection = sections[section]
+        let currentSection = viewModel.sections[section]
 
         headerView.configure(with: WeatherServiceTableSectionHeaderView.ViewModel(title: currentSection.title))
 

@@ -8,6 +8,7 @@
 import Foundation
 import WeatherService
 
+/// Table view sections to show current and forecast temperatures in different sections
 enum Section {
     case currentTemperature(viewModel: CurrentTemperatureViewModel)
     case forecastTemperatures(viewModels: [ForecastTemperatureViewModel])
@@ -31,83 +32,63 @@ enum Section {
     }
 }
 
+/// A struct to store current temperature and forecast temperature info in a single container
+struct TemperatureInfo {
+    let currentTemperatureViewModel: CurrentTemperatureViewModel
+    let temperatureForecastViewModels: [ForecastTemperatureViewModel]
+}
+
 final class TemperatureDetailsScreenViewModel {
 
     var router: TemperatureDetailsScreenRouter?
     weak var view: TemperatureDetailsScreenViewable?
 
+    private let temperatureInfo: TemperatureInfo
+    let location: Location
+    private let coreDataActionsUtility: CoreDataActionsUtility
+    private let temperatureInfoUtility: TemperatureInfoUtility
+    let sections: [Section]
+
     var title: String {
         return location.name
     }
 
-    private let location: Location
-    private let weatherService: WeatherService
-    private let coreDataActionsUtility: CoreDataActionsUtility
-
-    init(location: Location, weatherService: WeatherService, coreDataActionsUtility: CoreDataActionsUtility = CoreDataActionsUtility()) {
+    init(
+        temperatureInfo: TemperatureInfo,
+        location: Location,
+        coreDataActionsUtility: CoreDataActionsUtility = CoreDataActionsUtility(),
+        temperatureInfoUtility: TemperatureInfoUtility) {
+        self.temperatureInfo = temperatureInfo
         self.location = location
-        self.weatherService = weatherService
         self.coreDataActionsUtility = coreDataActionsUtility
+        self.temperatureInfoUtility = temperatureInfoUtility
+            self.sections = [.currentTemperature(viewModel: temperatureInfo.currentTemperatureViewModel), .forecastTemperatures(viewModels: temperatureInfo.temperatureForecastViewModels)]
     }
+    
+    /// A method to toggle favorite status of current location on the favorites screen
+    func toggleLocationFavoriteStatus() {
 
-    func loadAndStoreForecastDetailsForCurrentLocation() {
-        let coordinates = location.coordinates
-        self.weatherService.forecastAndCurrentTemperature(for: .coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude)) { [weak self] result in
+        self.view?.showLoadingIndicator(true)
 
-            guard let self else { return }
+        // Toggle locations's favorite status
+        location.toggleFavoriteStatus()
 
-            switch result {
-            case .success(let weatherData):
-
-                let sections = self.convertRemoteWeatherDataToSections(with: weatherData)
-
-                DispatchQueue.main.async {
-                    self.view?.refreshView(with: sections)
-                }
-            case .failure(let failure):
-                DispatchQueue.main.async {
-                    self.view?.showAlert(with: "Error", message: failure.errorMessageString())
-                }
-            }
-        }
-    }
-
-    private func convertRemoteWeatherDataToSections(with weatherData: WSWeatherData) -> [Section] {
-
-        let currentTemperatureViewModel = CurrentTemperatureViewModel(
-            temperatureCelsius: weatherData.currentTemperature.temperatureCelsius,
-            temperatureFahrenheit: weatherData.currentTemperature.temperatureFahrenheit,
-            lastUpdateDateTimeString: "Last Updated : \(weatherData.currentTemperature.lastUpdateDateTimeString)",
-            unit: .celsius
-        )
-
-        let currentTemperatureSection = Section.currentTemperature(
-            viewModel: currentTemperatureViewModel
-        )
-
-        let forecastTemperatureViewModels: [ForecastTemperatureViewModel] = weatherData.forecasts.map { forecast -> ForecastTemperatureViewModel in
-            return ForecastTemperatureViewModel(
-                minimumTemperatureCelsius: forecast.minimumTemperatureCelsius,
-                maximumTemperatureCelsius: forecast.maximumTemperatureCelsius,
-                averageTemperatureCelsius: forecast.averageTemperatureCelsius,
-                minimumTemperatureFahrenheit: forecast.minimumTemperatureFahrenheit,
-                maximumTemperatureFahrenheit: forecast.maximumTemperatureFahrenheit,
-                averageTemperatureFahrenheit: forecast.averageTemperatureFahrenheit,
-                lastUpdatedDateString: "Forecast for: \(forecast.dateString)",
-                unit: .celsius
+        // If location is unfavorited, just remove it from cache
+        if !location.isFavorite {
+            self.temperatureInfoUtility.removeTemperatureData(for: location.id)
+        } else {
+            // If the location is newly favorited, add it to the cache
+            self.temperatureInfoUtility.saveTemperatureData(
+                with: self.location.id,
+                currentTemperatureViewModel: temperatureInfo.currentTemperatureViewModel,
+                temperatureForecastViewModels: temperatureInfo.temperatureForecastViewModels
             )
         }
 
-        let sections = [
-            currentTemperatureSection,
-                .forecastTemperatures(viewModels: forecastTemperatureViewModels)
-        ]
-        coreDataActionsUtility.saveTemperatureData(
-            with: location.id,
-            currentTemperatureViewModel: currentTemperatureViewModel,
-            temperatureForecastViewModels: forecastTemperatureViewModels
-        )
-        return sections
+        // Update the location's favorite status in the local cache
+        self.coreDataActionsUtility.toggleFavoriteStatusForLocation(with: location.id)
+        view?.updateFavoriteLocationIcon(location.isFavorite)
+        self.view?.showLoadingIndicator(false)
     }
 }
 

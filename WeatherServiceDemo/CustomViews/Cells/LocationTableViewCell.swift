@@ -8,7 +8,8 @@
 import UIKit
 
 final class LocationTableViewCell: UITableViewCell {
-
+    
+    /// Style Constants
     private enum Constants {
         static let horizontalPadding: CGFloat = 8.0
         static let verticalPadding: CGFloat = 8.0
@@ -17,7 +18,7 @@ final class LocationTableViewCell: UITableViewCell {
         static let favoriteViewHeight: CGFloat = 20.0
     }
 
-    let nameLabel: UILabel = {
+    private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -25,7 +26,7 @@ final class LocationTableViewCell: UITableViewCell {
         return label
     }()
 
-    let favoriteButtonView: UIButton = {
+    private let favoriteButtonView: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -47,6 +48,11 @@ final class LocationTableViewCell: UITableViewCell {
         super.prepareForReuse()
         nameLabel.text = nil
         favoriteButtonView.setImage(nil, for: .normal)
+    }
+
+    func configure(with locationsModel: Location) {
+        self.nameLabel.text = locationsModel.name
+        self.favoriteButtonView.setImage(locationsModel.favoritesImage, for: .normal)
     }
 
     // MARK: Private methods
@@ -77,10 +83,5 @@ final class LocationTableViewCell: UITableViewCell {
 
     @objc private func favoriteButtonTapped() {
         favoriteButtonActionClosure?()
-    }
-
-    func configure(with locationsModel: Location) {
-        self.nameLabel.text = locationsModel.name
-        self.favoriteButtonView.setImage(locationsModel.favoritesImage, for: .normal)
     }
 }

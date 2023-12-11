@@ -15,7 +15,7 @@ final class ForecastTemperatureDetailsTableViewCell: UITableViewCell {
         static let verticalSpacing: CGFloat = 8.0
     }
 
-    let lastUpdatedDateLabel: UILabel = {
+    private let lastUpdatedDateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -31,7 +31,7 @@ final class ForecastTemperatureDetailsTableViewCell: UITableViewCell {
         return label
     }()
 
-    let maximumTemperatureLabel: UILabel = {
+    private let maximumTemperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -39,7 +39,7 @@ final class ForecastTemperatureDetailsTableViewCell: UITableViewCell {
         return label
     }()
 
-    let averageTemperatureLabel: UILabel = {
+    private let averageTemperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -63,6 +63,13 @@ final class ForecastTemperatureDetailsTableViewCell: UITableViewCell {
         minimumTemperatureLabel.text = nil
         maximumTemperatureLabel.text = nil
         averageTemperatureLabel.text = nil
+    }
+
+    func configure(with viewModel: ForecastTemperatureViewModel) {
+        self.lastUpdatedDateLabel.text = viewModel.lastUpdatedDateString
+        self.minimumTemperatureLabel.text = viewModel.minimumTemperatureDisplayValue
+        self.maximumTemperatureLabel.text = viewModel.maximumTemperatureDisplayValue
+        self.averageTemperatureLabel.text = viewModel.averageTemperatureDisplayValue
     }
 
     // MARK: Private methods
@@ -101,12 +108,5 @@ final class ForecastTemperatureDetailsTableViewCell: UITableViewCell {
             lastUpdatedDateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.horizontalPadding),
             lastUpdatedDateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.verticalPadding),
         ])
-    }
-
-    func configure(with viewModel: ForecastTemperatureViewModel) {
-        self.lastUpdatedDateLabel.text = viewModel.lastUpdatedDateString
-        self.minimumTemperatureLabel.text = viewModel.minimumTemperatureDisplayValue
-        self.maximumTemperatureLabel.text = viewModel.maximumTemperatureDisplayValue
-        self.averageTemperatureLabel.text = viewModel.averageTemperatureDisplayValue
     }
 }
