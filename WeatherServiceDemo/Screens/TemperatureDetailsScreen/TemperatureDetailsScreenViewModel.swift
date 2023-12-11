@@ -118,7 +118,6 @@ final class TemperatureDetailsScreenViewModel {
         }
 
         //Check if sections for new mapping already exist in the dictionary
-
         let newSections = unitToSectionsMapping[newTemperatureUnit]
 
         if let newSections {

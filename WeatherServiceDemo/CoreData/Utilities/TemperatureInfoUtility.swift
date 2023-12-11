@@ -36,8 +36,8 @@ final class TemperatureInfoUtility {
     ///   - completion: A completion closure with current and forecast temperature information
     func loadWeatherInformation(with location: Location, completion: @escaping (Result<(CurrentTemperatureViewModel, [ForecastTemperatureViewModel]), DataLoadError>) -> Void) {
 
-        self.weatherService.forecastAndCurrentTemperature(
-            for: .coordinates(latitude: location.coordinates.latitude, longitude: location.coordinates.longitude)) { [weak self] result in
+        self.weatherService.forecast(
+            with: .coordinates(latitude: location.coordinates.latitude, longitude: location.coordinates.longitude), daysInFuture: 7) { [weak self] result in
 
                 guard let self else { return }
 
@@ -148,9 +148,9 @@ final class TemperatureInfoUtility {
     private func convertRemoteWeatherDataToLocalViewModels(with weatherData: WSWeatherData, location: Location) -> (currentTemperatureViewModel: CurrentTemperatureViewModel, forecastTemperatureViewModels: [ForecastTemperatureViewModel]) {
 
         let currentTemperatureViewModel = CurrentTemperatureViewModel(
-            temperatureCelsius: weatherData.currentTemperature.temperatureCelsius,
-            temperatureFahrenheit: weatherData.currentTemperature.temperatureFahrenheit,
-            lastUpdateDateTimeString: "Last Updated : \(weatherData.currentTemperature.lastUpdateDateTimeString)",
+            temperatureCelsius: weatherData.current.temperatureCelsius,
+            temperatureFahrenheit: weatherData.current.temperatureFahrenheit,
+            lastUpdateDateTimeString: "Last Updated : \(weatherData.current.lastUpdateDateTimeString)",
             unit: .celsius
         )
 
