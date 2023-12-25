@@ -52,12 +52,14 @@ final class CoreDataOperationsUtility {
 
     func storeLocationsInCache(with locationsList: [Location]) {
 
-        let entity = NSEntityDescription.entity(forEntityName: "Location", in: self.context)!
+        guard let entity = NSEntityDescription.entity(forEntityName: "Location", in: self.context) else {
+            Self.logger.error("Unable to locate Location entity in the data model. Existing the flow")
+            return
+        }
 
         locationsList.forEach { newLocation in
 
             let location = NSManagedObject(entity: entity, insertInto: context)
-
             location.setValue(newLocation.id, forKey: "id")
             location.setValue(newLocation.name, forKey: "name")
             location.setValue(newLocation.coordinates.latitude, forKey: "latitude")
