@@ -35,14 +35,24 @@ final class FavoriteLocationsListScreenRouter: Router {
     }
 
     func start() {
-        let viewModel = FavoriteLocationsListScreenViewModel(favoriteLocationModels: self.favoriteLocationModels, temperatureInfoUtility: TemperatureInfoUtility(weatherService: WeatherService()), favoriteStatusChangedClosure: favoriteStatusChangedClosure)
 
-        let viewController = FavoriteLocationsListScreenViewController(viewModel: viewModel, alertDisplayUtility: AlertDisplayUtility())
+        let coreDataOperationsUtility = CoreDataOperationsUtility(coreDataStore: CoreDataStore.shared)
+
+        let viewModel = FavoriteLocationsListScreenViewModel(
+            favoriteLocationModels: self.favoriteLocationModels,
+            temperatureInfoUtility: TemperatureInfoUtility(
+                weatherService: WeatherService(),
+                coreDataActionsUtility: coreDataOperationsUtility
+            ),
+            coreDataOperationsUtility: coreDataOperationsUtility,
+            favoriteStatusChangedClosure: favoriteStatusChangedClosure
+        )
+
+        let viewController = FavoriteLocationsListScreenViewController(viewModel: viewModel, alertDisplayUtility: AlertDisplayUtility(), coreDataActionsUtility: coreDataOperationsUtility)
 
         let navigationController = UINavigationController(rootViewController: viewController)
 
         viewModel.router = self
-        viewModel.view = viewController
 
         self.rootViewController.present(navigationController, animated: true)
     }
@@ -52,20 +62,22 @@ final class FavoriteLocationsListScreenRouter: Router {
     }
 
     func navigateToLocationForecastDetailsPage(with location: Location, temperatureInfo: TemperatureInfo) {
-        self.dismiss { [weak self] in
+        DispatchQueue.main.async {
+            self.dismiss { [weak self] in
 
-            guard let self else {
-                Self.logger.error("Self was prematurely removed from the memory while trying to navigate to location forecast details page")
-                return
+                guard let self else {
+                    Self.logger.error("Self was prematurely removed from the memory while trying to navigate to location forecast details page")
+                    return
+                }
+
+                let forecastDetailsPageRouter = TemperatureDetailsScreenRouter(
+                    rootViewController: self.rootViewController,
+                    selectedLocation: location,
+                    temperatureInfo: temperatureInfo,
+                    temperatureInfoUtility: self.temperatureInfoUtility
+                )
+                forecastDetailsPageRouter.start()
             }
-
-            let forecastDetailsPageRouter = TemperatureDetailsScreenRouter(
-                rootViewController: self.rootViewController,
-                selectedLocation: location,
-                temperatureInfo: temperatureInfo,
-                temperatureInfoUtility: temperatureInfoUtility
-            )
-            forecastDetailsPageRouter.start()
         }
     }
 }

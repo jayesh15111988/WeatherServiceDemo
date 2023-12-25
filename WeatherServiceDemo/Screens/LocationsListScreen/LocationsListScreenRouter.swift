@@ -26,11 +26,12 @@ final class LocationsListScreenRouter {
 
     func start() {
 
-        let locationsListViewModel = LocationsListScreenViewModel(jsonFileReader: jsonFileReader, temperatureInfoUtility: self.temperatureInfoUtility)
+        let coreDataOperationsUtility = CoreDataOperationsUtility(coreDataStore: CoreDataStore.shared)
+
+        let locationsListViewModel = LocationsListScreenViewModel(jsonFileReader: jsonFileReader, temperatureInfoUtility: self.temperatureInfoUtility, coreDataActionsUtility: coreDataOperationsUtility)
 
         let locationsViewController = LocationsListScreenViewController(viewModel: locationsListViewModel, alertDisplayUtility: AlertDisplayUtility())
 
-        locationsListViewModel.view = locationsViewController
         locationsListViewModel.router = self
 
         self.navController.pushViewController(locationsViewController, animated: true)
@@ -54,7 +55,9 @@ final class LocationsListScreenRouter {
     ///   - temperatureInfo: An info about current and forecast temperatures
     func navigateToLocationForecastDetailsPage(with location: Location, temperatureInfo: TemperatureInfo) {
 
-        let forecastDetailsPageRouter = TemperatureDetailsScreenRouter(rootViewController: self.navController, selectedLocation: location, temperatureInfo: temperatureInfo, temperatureInfoUtility: temperatureInfoUtility)
-        forecastDetailsPageRouter.start()
+        DispatchQueue.main.async {
+            let forecastDetailsPageRouter = TemperatureDetailsScreenRouter(rootViewController: self.navController, selectedLocation: location, temperatureInfo: temperatureInfo, temperatureInfoUtility: self.temperatureInfoUtility)
+            forecastDetailsPageRouter.start()
+        }
     }
 }

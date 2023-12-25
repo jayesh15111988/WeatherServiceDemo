@@ -22,7 +22,9 @@ final class AppRouter: Router {
     }
 
     func start() {
-        let locationsScreenRouter = LocationsListScreenRouter(navController: self.rootViewController, temperatureInfoUtility: TemperatureInfoUtility(weatherService: WeatherService()))
+
+        let coreDataActionsUtility = CoreDataOperationsUtility(coreDataStore: CoreDataStore.shared)
+        let locationsScreenRouter = LocationsListScreenRouter(navController: self.rootViewController, temperatureInfoUtility: TemperatureInfoUtility(weatherService: WeatherService(), coreDataActionsUtility: coreDataActionsUtility))
         locationsScreenRouter.start()
 
         self.window.rootViewController = rootViewController

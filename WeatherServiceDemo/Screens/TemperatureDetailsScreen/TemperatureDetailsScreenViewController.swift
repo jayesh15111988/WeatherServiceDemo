@@ -5,16 +5,9 @@
 //  Created by Jayesh Kawli on 12/10/23.
 //
 
+import Combine
 import OSLog
 import UIKit
-
-/// A protocol for transferring actions from view model to the view
-protocol TemperatureDetailsScreenViewable: AnyObject {
-    func showAlert(with title: String, message: String)
-    func updateFavoriteLocationIcon(_ isFavorite: Bool)
-    func showLoadingIndicator(_ showing: Bool)
-    func reloadTableView()
-}
 
 final class TemperatureDetailsScreenViewController: UIViewController {
 
@@ -52,11 +45,12 @@ final class TemperatureDetailsScreenViewController: UIViewController {
         layoutViews()
         registerCells()
         setupNavigationBarButton()
-        reloadTableView()
+        setupSubscriptions()
     }
 
     private let viewModel: TemperatureDetailsScreenViewModel
     private let alertDisplayUtility: AlertDisplayable
+    private var cancellables: [AnyCancellable] = []
 
     init(viewModel: TemperatureDetailsScreenViewModel, alertDisplayUtility: AlertDisplayable) {
         self.viewModel = viewModel
@@ -86,8 +80,6 @@ final class TemperatureDetailsScreenViewController: UIViewController {
 
         self.view.addSubview(segmentedControl)
         segmentedControl.addTarget(self, action: #selector(segmentedControlTapped), for: .valueChanged)
-
-        updateFavoriteLocationIcon(viewModel.location.isFavorite)
     }
 
     @objc private func segmentedControlTapped() {
@@ -135,32 +127,38 @@ final class TemperatureDetailsScreenViewController: UIViewController {
     }
 }
 
-//MARK: TemperatureDetailsScreenViewable protocol conformance
-extension TemperatureDetailsScreenViewController: TemperatureDetailsScreenViewable {
-    
-    func showAlert(with title: String, message: String) {
-        self.activityIndicatorViewProvider.stop()
-        alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message), parentViewController: self)
-    }
+extension TemperatureDetailsScreenViewController {
 
-    func updateFavoriteLocationIcon(_ isFavorite: Bool) {
-        if isFavorite {
-            favoriteButton.setImage(Style.shared.favoriteImage, for: .normal)
-        } else {
-            favoriteButton.setImage(Style.shared.nonFavoriteImage, for: .normal)
-        }
-    }
+    func setupSubscriptions() {
 
-    func showLoadingIndicator(_ showing: Bool) {
-        if showing {
-            self.activityIndicatorViewProvider.start()
-        } else {
-            self.activityIndicatorViewProvider.stop()
-        }
-    }
+        viewModel.$reloadTableView.filter { $0 }.receive(on: DispatchQueue.main).sink { [weak self] reloadTableView in
 
-    func reloadTableView() {
-        self.tableView.reloadData()
+            guard let self else { return }
+
+            self.tableView.reloadData()
+        }.store(in: &cancellables)
+
+        viewModel.$isLoading.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] isLoading in
+
+            guard let self else { return }
+
+            if isLoading {
+                self.activityIndicatorViewProvider.start()
+            } else {
+                self.activityIndicatorViewProvider.stop()
+            }
+        }.store(in: &cancellables)
+
+        viewModel.$isMarkedFavorite.receive(on: DispatchQueue.main).sink { [weak self] isMarkedFavorite in
+
+            guard let self else { return }
+
+            if isMarkedFavorite {
+                favoriteButton.setImage(Style.shared.favoriteImage, for: .normal)
+            } else {
+                favoriteButton.setImage(Style.shared.nonFavoriteImage, for: .normal)
+            }
+        }.store(in: &cancellables)
     }
 }
 

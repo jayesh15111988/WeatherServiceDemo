@@ -8,7 +8,7 @@
 import Foundation
 
 protocol JSONFileReadable {
-    func getModelFromJSONFile<T: Decodable>(with name: String) -> T?
+    func getModelFromJSONFile<T: Decodable>(with name: String, completion: @escaping (T?) -> Void)
 }
 
 final class JSONFileReader: JSONFileReadable {
@@ -16,13 +16,16 @@ final class JSONFileReader: JSONFileReadable {
     /// A method to get the specified Decodable model after converting local JSON data into model object
     /// - Parameter name: Name of the JSON file to read the data from
     /// - Returns: A specified Decodable model objet
-    func getModelFromJSONFile<T: Decodable>(with name: String) -> T? {
+    func getModelFromJSONFile<T: Decodable>(with name: String, completion: @escaping (T?) -> Void) {
 
-        guard let jsonData = getDataFromJSONFile(with: name) else {
-            return nil
+        DispatchQueue.global(qos: .default).async {
+            guard let jsonData = self.getDataFromJSONFile(with: name) else {
+                completion(nil)
+                return
+            }
+
+            completion(try? JSONDecoder().decode(T.self, from: jsonData))
         }
-
-        return try? JSONDecoder().decode(T.self, from: jsonData)
     }
 
     /// A method to get Data for JSON values read from local JSON file

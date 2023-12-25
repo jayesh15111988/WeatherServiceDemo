@@ -5,20 +5,16 @@
 //  Created by Jayesh Kawli on 12/10/23.
 //
 
+import Combine
 import UIKit
-
-protocol LocationsListScreenViewable: AnyObject {
-    func reloadView(with locationsList: [Location])
-    func showAlert(with title: String, message: String)
-    func reloadCell(at inde: Int)
-    func showLoadingIndicator(_ showing: Bool)
-}
 
 final class LocationsListScreenViewController: UIViewController {
 
     private var locations: [Location] = []
 
     private let activityIndicatorViewProvider = ActivityIndicatorViewProvider()
+
+    private var cancellables: [AnyCancellable] = []
 
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -34,6 +30,7 @@ final class LocationsListScreenViewController: UIViewController {
         setupViews()
         layoutViews()
         registerCells()
+        setupSubscriptions()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -99,28 +96,40 @@ final class LocationsListScreenViewController: UIViewController {
     }
 }
 
-extension LocationsListScreenViewController: LocationsListScreenViewable {
-    func reloadView(with locationsList: [Location]) {
-        self.activityIndicatorViewProvider.stop()
-        self.locations = locationsList
-        self.tableView.reloadData()
-    }
+extension LocationsListScreenViewController {
 
-    func showAlert(with title: String, message: String) {
-        self.activityIndicatorViewProvider.stop()
-        self.alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message), parentViewController: self)
-    }
+    func setupSubscriptions() {
+        viewModel.$locations.compactMap { $0 }.receive(on: DispatchQueue.main).sink { [weak self] locations in
+            guard let self else { return }
 
-    func reloadCell(at index: Int) {
-        self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-    }
+            self.locations = locations
+            self.tableView.reloadData()
 
-    func showLoadingIndicator(_ showing: Bool) {
-        if showing {
-            self.activityIndicatorViewProvider.start()
-        } else {
-            self.activityIndicatorViewProvider.stop()
-        }
+        }.store(in: &cancellables)
+
+        viewModel.$alertInfo.compactMap { $0 }.receive(on: DispatchQueue.main).sink { [weak self] alertInfo in
+            guard let self else { return }
+
+            self.alertDisplayUtility.showAlert(with: alertInfo, parentViewController: self)
+
+        }.store(in: &cancellables)
+
+        viewModel.$cellIndexToReload.compactMap { $0 }.receive(on: DispatchQueue.main).sink { [weak self] index in
+            guard let self else { return }
+
+            self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+
+        }.store(in: &cancellables)
+
+        viewModel.$isLoading.compactMap { $0 }.receive(on: DispatchQueue.main).sink { [weak self] isLoading in
+            guard let self else { return }
+            
+            if isLoading {
+                self.activityIndicatorViewProvider.start()
+            } else {
+                self.activityIndicatorViewProvider.stop()
+            }
+        }.store(in: &cancellables)
     }
 }
 

@@ -5,12 +5,8 @@
 //  Created by Jayesh Kawli on 12/10/23.
 //
 
+import Combine
 import UIKit
-
-protocol FavoriteLocationsListViewable: AnyObject {
-    func showAlert(with title: String, message: String, actions: [UIAlertAction])
-    func showLoadingIndicator(_ showing: Bool)
-}
 
 final class FavoriteLocationsListScreenViewController: UIViewController {
 
@@ -31,14 +27,21 @@ final class FavoriteLocationsListScreenViewController: UIViewController {
         layoutViews()
         registerCells()
         setupNavigationBarButton()
+        setupSubscriptions()
         refreshViewWithFavoriteLocations()
     }
 
     private let viewModel: FavoriteLocationsListScreenViewModel
     private let alertDisplayUtility: AlertDisplayable
-    private let coreDataActionsUtility: CoreDataActionsUtility
+    private let coreDataActionsUtility: CoreDataOperationsUtility
 
-    init(viewModel: FavoriteLocationsListScreenViewModel, alertDisplayUtility: AlertDisplayable, coreDataActionsUtility: CoreDataActionsUtility = CoreDataActionsUtility()) {
+    private var cancellables: [AnyCancellable] = []
+
+    init(
+        viewModel: FavoriteLocationsListScreenViewModel,
+        alertDisplayUtility: AlertDisplayable,
+        coreDataActionsUtility: CoreDataOperationsUtility
+    ) {
         self.viewModel = viewModel
         self.alertDisplayUtility = alertDisplayUtility
         self.coreDataActionsUtility = coreDataActionsUtility
@@ -85,17 +88,25 @@ final class FavoriteLocationsListScreenViewController: UIViewController {
     }
 }
 
-extension FavoriteLocationsListScreenViewController: FavoriteLocationsListViewable {
-    func showAlert(with title: String, message: String, actions: [UIAlertAction]) {
-        alertDisplayUtility.showAlert(with: AlertInfo(title: title, message: message, actions: actions), parentViewController: self)
-    }
+extension FavoriteLocationsListScreenViewController {
+    func setupSubscriptions() {
+        viewModel.$isLoading.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] isLoading in
 
-    func showLoadingIndicator(_ showing: Bool) {
-        if showing {
-            self.activityIndicatorViewProvider.start()
-        } else {
-            self.activityIndicatorViewProvider.stop()
-        }
+            guard let self else { return }
+
+            if isLoading {
+                self.activityIndicatorViewProvider.start()
+            } else {
+                self.activityIndicatorViewProvider.stop()
+            }
+        }.store(in: &cancellables)
+
+        viewModel.$alertInfo.compactMap { $0 }.receive(on: DispatchQueue.main).sink { [weak self] alertInfo in
+
+            guard let self else { return }
+
+            alertDisplayUtility.showAlert(with: alertInfo, parentViewController: self)
+        }.store(in: &cancellables)
     }
 }
 
@@ -116,7 +127,7 @@ extension FavoriteLocationsListScreenViewController: UITableViewDelegate, UITabl
             guard let self else { return }
 
             guard let currentIndexPath = tableView.indexPath(for: cell) else {
-                self.showAlert(with: "Invalid State", message: "Unfortunately app has reached an invalid state. Please restart the app to continue using the app", actions: [])
+                alertDisplayUtility.showAlert(with: AlertInfo(title: "Invalid State", message: "Unfortunately app has reached an invalid state. Please restart the app to continue using the app"), parentViewController: self)
                 return
             }
             viewModel.removeLocationFromFavorites(at: currentIndexPath.row)

@@ -30,11 +30,14 @@ final class TemperatureDetailsScreenRouter: Router {
     }
 
     func start() {
-        let viewModel = TemperatureDetailsScreenViewModel(temperatureInfo: temperatureInfo, location: selectedLocation, temperatureInfoUtility: temperatureInfoUtility)
+
+        let coreDataOperationsUtility = CoreDataOperationsUtility(coreDataStore: CoreDataStore.shared)
+
+        let viewModel = TemperatureDetailsScreenViewModel(temperatureInfo: temperatureInfo, location: selectedLocation, coreDataActionsUtility: coreDataOperationsUtility, temperatureInfoUtility: temperatureInfoUtility)
 
         let viewController = TemperatureDetailsScreenViewController(viewModel: viewModel, alertDisplayUtility: AlertDisplayUtility())
         viewModel.router = self
-        viewModel.view = viewController
+
         self.rootViewController.pushViewController(viewController, animated: true)
     }
 }

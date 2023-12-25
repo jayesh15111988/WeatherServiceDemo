@@ -5,7 +5,9 @@
 //  Created by Jayesh Kawli on 12/10/23.
 //
 
+import Combine
 import Foundation
+
 import WeatherService
 
 /// Table view sections to show current and forecast temperatures in different sections
@@ -45,13 +47,16 @@ struct TemperatureInfo {
 final class TemperatureDetailsScreenViewModel {
 
     var router: TemperatureDetailsScreenRouter?
-    weak var view: TemperatureDetailsScreenViewable?
 
     private let temperatureInfo: TemperatureInfo
     let location: Location
-    private let coreDataActionsUtility: CoreDataActionsUtility
+    private let coreDataActionsUtility: CoreDataOperationsUtility
     private let temperatureInfoUtility: TemperatureInfoUtility
     private(set) var sections: [Section]
+
+    @Published var isLoading = false
+    @Published var reloadTableView = false
+    @Published var isMarkedFavorite = false
 
     var title: String {
         return location.name
@@ -64,7 +69,7 @@ final class TemperatureDetailsScreenViewModel {
     init(
         temperatureInfo: TemperatureInfo,
         location: Location,
-        coreDataActionsUtility: CoreDataActionsUtility = CoreDataActionsUtility(),
+        coreDataActionsUtility: CoreDataOperationsUtility,
         temperatureInfoUtility: TemperatureInfoUtility) {
         self.temperatureInfo = temperatureInfo
         self.location = location
@@ -81,22 +86,24 @@ final class TemperatureDetailsScreenViewModel {
         currentTemperatureUnit = temperatureInfo.currentTemperatureUnit
         // Since default unit is celsius, we will use .celsius as an enum value to store sections in the dictionary
         unitToSectionsMapping[self.temperatureInfo.currentTemperatureUnit] = self.sections
+        reloadTableView = true
+        self.isMarkedFavorite = location.isFavorite
     }
     
     /// A method to toggle favorite status of current location on the favorites screen
     func toggleLocationFavoriteStatus() {
 
-        self.view?.showLoadingIndicator(true)
+        self.isLoading = true
 
         // Toggle locations's favorite status
         location.toggleFavoriteStatus()
 
         // If location is unfavorited, just remove it from cache
         if !location.isFavorite {
-            self.temperatureInfoUtility.removeTemperatureData(for: location.id)
+            self.coreDataActionsUtility.removeTemperatureData(for: location.id)
         } else {
             // If the location is newly favorited, add it to the cache
-            self.temperatureInfoUtility.saveTemperatureData(
+            self.coreDataActionsUtility.saveTemperatureData(
                 with: self.location.id,
                 currentTemperatureViewModel: temperatureInfo.currentTemperatureViewModel,
                 temperatureForecastViewModels: temperatureInfo.temperatureForecastViewModels
@@ -105,8 +112,8 @@ final class TemperatureDetailsScreenViewModel {
 
         // Update the location's favorite status in the local cache
         self.coreDataActionsUtility.toggleFavoriteStatusForLocation(with: location.id)
-        view?.updateFavoriteLocationIcon(location.isFavorite)
-        self.view?.showLoadingIndicator(false)
+        self.isMarkedFavorite = location.isFavorite
+        self.isLoading = false
     }
 
     //A function to toggle temperature units based on the user input
@@ -148,7 +155,7 @@ final class TemperatureDetailsScreenViewModel {
             //Set sections
             self.sections = newSections
         }
-        self.view?.reloadTableView()
+        self.reloadTableView = true
         self.currentTemperatureUnit = newTemperatureUnit
     }
 }

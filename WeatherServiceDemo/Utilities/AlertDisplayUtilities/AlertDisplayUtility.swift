@@ -60,7 +60,10 @@ final class AlertDisplayUtility: AlertDisplayable {
         if !alertInfo.actions.isEmpty {
             alertInfo.actions.forEach { alertController.addAction($0) }
         } else {
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
+
+                guard let self else { return }
+
                 guard !self.alertInfoInQueue.isEmpty else {
                     return
                 }
