@@ -73,13 +73,14 @@ final class LocationsListScreenViewModel {
                         )
                     }
                     self.coreDataActionsUtility.storeLocationsInCache(with: self.locationsListScreenLocationModels)
+                    self.locations = self.locationsListScreenLocationModels
+                    self.isLoading = false
                 }
             } else {
                 self.locationsListScreenLocationModels = cachedLocations
+                self.locations = self.locationsListScreenLocationModels
+                self.isLoading = false
             }
-
-            self.locations = self.locationsListScreenLocationModels
-            self.isLoading = false
         }
     }
 

@@ -11,7 +11,7 @@ import WeatherService
 
 final class TemperatureInfoUtility {
 
-    private let weatherService: WeatherService
+    private let weatherService: WeatherServiceable
     private let coreDataActionsUtility: CoreDataOperationsUtility
 
     static let logger = Logger(
@@ -20,7 +20,7 @@ final class TemperatureInfoUtility {
     )
 
     init(
-        weatherService: WeatherService,
+        weatherService: WeatherServiceable,
         coreDataActionsUtility: CoreDataOperationsUtility) {
             self.weatherService = weatherService
             self.coreDataActionsUtility = coreDataActionsUtility

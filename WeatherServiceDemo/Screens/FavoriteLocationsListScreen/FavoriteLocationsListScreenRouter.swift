@@ -41,7 +41,7 @@ final class FavoriteLocationsListScreenRouter: Router {
         let viewModel = FavoriteLocationsListScreenViewModel(
             favoriteLocationModels: self.favoriteLocationModels,
             temperatureInfoUtility: TemperatureInfoUtility(
-                weatherService: WeatherService(),
+                weatherService: WeatherService.shared,
                 coreDataActionsUtility: coreDataOperationsUtility
             ),
             coreDataOperationsUtility: coreDataOperationsUtility,
