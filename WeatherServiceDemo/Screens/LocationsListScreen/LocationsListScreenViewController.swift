@@ -91,7 +91,6 @@ final class LocationsListScreenViewController: UIViewController {
     }
 
     func loadLocations() {
-        self.activityIndicatorViewProvider.start()
         viewModel.loadLocations()
     }
 }

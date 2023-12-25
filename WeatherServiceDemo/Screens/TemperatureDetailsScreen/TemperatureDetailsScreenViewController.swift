@@ -12,6 +12,7 @@ import UIKit
 final class TemperatureDetailsScreenViewController: UIViewController {
 
     private let activityIndicatorViewProvider = ActivityIndicatorViewProvider()
+    private let favoriteButton = UIButton(frame: .zero)
 
     private let segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(frame: .zero)
@@ -31,12 +32,6 @@ final class TemperatureDetailsScreenViewController: UIViewController {
         tableView.sectionHeaderTopPadding = 0
         tableView.tableFooterView = nil
         return tableView
-    }()
-
-    private let favoriteButton: UIButton = {
-        let button = UIButton(frame: .zero)
-        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        return button
     }()
 
     override func viewDidLoad() {
@@ -117,6 +112,8 @@ final class TemperatureDetailsScreenViewController: UIViewController {
     }
 
     private func setupNavigationBarButton() {
+        favoriteButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        favoriteButton.setImage(Style.shared.favoriteImage, for: .normal)
         favoriteButton.addTarget(self, action:#selector(favoriteButtonPressed), for: .touchUpInside)
         let barButton = UIBarButtonItem(customView: favoriteButton)
         self.navigationItem.rightBarButtonItem = barButton

@@ -44,6 +44,7 @@ final class LocationsListScreenViewModel {
     /// A method to load the initial list of locations
     func loadLocations() {
 
+        self.isLoading = true
         coreDataActionsUtility.getCachedLocations { [weak self] cachedLocations in
 
             guard let self else { return }
@@ -53,6 +54,7 @@ final class LocationsListScreenViewModel {
 
                     guard let locationsParentNode else {
                         self.locations = []
+                        self.isLoading = false
                         return
                     }
 
@@ -77,6 +79,7 @@ final class LocationsListScreenViewModel {
             }
 
             self.locations = self.locationsListScreenLocationModels
+            self.isLoading = false
         }
     }
 
@@ -140,6 +143,8 @@ final class LocationsListScreenViewModel {
 
         self.temperatureInfoUtility.loadWeatherInformation(with: location) { result in
 
+            self.isLoading = false
+
             switch result {
             case .success(let cachedLocationInfoData):
                 self.coreDataActionsUtility.saveTemperatureData(
@@ -154,7 +159,6 @@ final class LocationsListScreenViewModel {
                 self.alertInfo = AlertInfo(title: "Error", message: "Failed to save favorited location temperature information in the cache. Failed with error \(failure.errorMessageString())")
 
             }
-            self.isLoading = false
         }
     }
 }
