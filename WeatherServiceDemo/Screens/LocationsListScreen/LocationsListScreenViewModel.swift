@@ -158,7 +158,6 @@ final class LocationsListScreenViewModel {
                     return
                 }
                 self.alertInfo = AlertInfo(title: "Error", message: "Failed to save favorited location temperature information in the cache. Failed with error \(failure.errorMessageString())")
-
             }
         }
     }

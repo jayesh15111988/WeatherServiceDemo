@@ -157,7 +157,9 @@ final class CoreDataOperationsUtility {
         do {
             if let cachedCurrentTemperatureInfo = try context.fetch(fetchRequest).first {
 
-                if let lastUpdatedDateTimeString = cachedCurrentTemperatureInfo.value(forKey: "lastUpdatedDateTimeString") as? String, let temperatureCelsius = cachedCurrentTemperatureInfo.value(forKey: "temperatureCelsius") as? Double, let temperatureFahrenheit = cachedCurrentTemperatureInfo.value(forKey: "temperatureFahrenheit") as? Double {
+                if let lastUpdatedDateTimeString = cachedCurrentTemperatureInfo.value(forKey: "lastUpdatedDateTimeString") as? String, 
+                    let temperatureCelsius = cachedCurrentTemperatureInfo.value(forKey: "temperatureCelsius") as? Double,
+                    let temperatureFahrenheit = cachedCurrentTemperatureInfo.value(forKey: "temperatureFahrenheit") as? Double {
 
                     return CurrentTemperatureViewModel(temperatureCelsius: temperatureCelsius, temperatureFahrenheit: temperatureFahrenheit, lastUpdateDateTimeString: lastUpdatedDateTimeString, unit: .celsius)
 

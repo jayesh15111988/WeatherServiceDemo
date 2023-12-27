@@ -1,0 +1,79 @@
+{
+    "listId": "1",
+    "locations": [
+        {
+            "id": "1",
+            "name": "London, United Kingdom",
+            "coordinates": {
+                "latitude": 51.5074,
+                "longitude": 0.1278
+            }
+        },
+        {
+            "id": "2",
+            "name": "Berlin, Germany",
+            "coordinates": {
+                "latitude": 52.52,
+                "longitude": 13.405
+            }
+        },
+        {
+            "id": "3",
+            "name": "Madrid, Spain",
+            "coordinates": {
+                "latitude": 40.4168,
+                "longitude": 3.7038
+            }
+        },
+        {
+            "id": "4",
+            "name": "Kyiv, Ukraine",
+            "coordinates": {
+                "latitude": 50.4501,
+                "longitude": 30.5234
+            }
+        },
+        {
+            "id": "5",
+            "name": "Rome, Italy",
+            "coordinates": {
+                "latitude": 41.9028,
+                "longitude": 12.4964
+            }
+        },
+        {
+            "id": "6",
+            "name": "Paris, France",
+            "coordinates": {
+                "latitude": 48.8566,
+                "longitude": 2.3522
+            }
+        },
+        {
+            "id": "7",
+            "name": "Bucharest, Romania",
+            "coordinates": {
+                "latitude": 44.4268,
+                "longitude": 26.1025
+            }
+        },
+        {
+            "id": "8",
+            "name": "Vienna, Austria",
+            "coordinates": {
+                "latitude": 48.2082,
+                "longitude": 16.3738
+            }
+        },
+        {
+            "id": "9",
+            "name": "Budapest, Hungary",
+            "coordinates": {
+                "latitude": 47.4979,
+                "longitude": 19.0402
+            }
+        }
+    ]
+
+}
+
