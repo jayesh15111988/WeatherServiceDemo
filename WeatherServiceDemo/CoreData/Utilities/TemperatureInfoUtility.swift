@@ -67,7 +67,7 @@ final class TemperatureInfoUtility {
     ///   - weatherData: A network weather data
     ///   - location: A location for which weather data was requested
     /// - Returns: A tuple containing current and forecast temperature info
-    private func convertRemoteWeatherDataToLocalViewModels(with weatherData: WSWeatherData, location: Location) -> (currentTemperatureViewModel: CurrentTemperatureViewModel, forecastTemperatureViewModels: [ForecastTemperatureViewModel]) {
+    func convertRemoteWeatherDataToLocalViewModels(with weatherData: WSWeatherData, location: Location) -> (currentTemperatureViewModel: CurrentTemperatureViewModel, forecastTemperatureViewModels: [ForecastTemperatureViewModel]) {
 
         let currentTemperatureViewModel = CurrentTemperatureViewModel(
             temperatureCelsius: weatherData.current.temperatureCelsius,

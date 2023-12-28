@@ -21,6 +21,7 @@
 		918314622B3D24B9000C087A /* CurrentTemperatureViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918314612B3D24B9000C087A /* CurrentTemperatureViewModelTests.swift */; };
 		918314642B3D24C5000C087A /* ForecastTemperatureViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918314632B3D24C5000C087A /* ForecastTemperatureViewModelTests.swift */; };
 		918314662B3D24D2000C087A /* TemperatureUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918314652B3D24D2000C087A /* TemperatureUnitTests.swift */; };
+		918314682B3D9A6A000C087A /* TemperatureInfoUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918314672B3D9A6A000C087A /* TemperatureInfoUtilityTests.swift */; };
 		91A8B7CA2B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7C92B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift */; };
 		91A8B7CC2B24EF9C00E35C10 /* TemperatureDetailsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7CB2B24EF9C00E35C10 /* TemperatureDetailsScreenViewModel.swift */; };
 		91A8B7CE2B24EFA600E35C10 /* TemperatureDetailsScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B7CD2B24EFA600E35C10 /* TemperatureDetailsScreenRouter.swift */; };
@@ -80,6 +81,7 @@
 		918314612B3D24B9000C087A /* CurrentTemperatureViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTemperatureViewModelTests.swift; sourceTree = "<group>"; };
 		918314632B3D24C5000C087A /* ForecastTemperatureViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTemperatureViewModelTests.swift; sourceTree = "<group>"; };
 		918314652B3D24D2000C087A /* TemperatureUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureUnitTests.swift; sourceTree = "<group>"; };
+		918314672B3D9A6A000C087A /* TemperatureInfoUtilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureInfoUtilityTests.swift; sourceTree = "<group>"; };
 		91A8B7C92B24EF9200E35C10 /* TemperatureDetailsScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDetailsScreenViewController.swift; sourceTree = "<group>"; };
 		91A8B7CB2B24EF9C00E35C10 /* TemperatureDetailsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDetailsScreenViewModel.swift; sourceTree = "<group>"; };
 		91A8B7CD2B24EFA600E35C10 /* TemperatureDetailsScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureDetailsScreenRouter.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				918314612B3D24B9000C087A /* CurrentTemperatureViewModelTests.swift */,
 				918314632B3D24C5000C087A /* ForecastTemperatureViewModelTests.swift */,
 				918314652B3D24D2000C087A /* TemperatureUnitTests.swift */,
+				918314672B3D9A6A000C087A /* TemperatureInfoUtilityTests.swift */,
 			);
 			path = WeatherServiceDemoTests;
 			sourceTree = "<group>";
@@ -574,6 +577,7 @@
 				91D755012B3C69C0003B7F97 /* MockWeatherService.swift in Sources */,
 				918314662B3D24D2000C087A /* TemperatureUnitTests.swift in Sources */,
 				91D754FE2B3C68CD003B7F97 /* TestCoreDataStack.swift in Sources */,
+				918314682B3D9A6A000C087A /* TemperatureInfoUtilityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
