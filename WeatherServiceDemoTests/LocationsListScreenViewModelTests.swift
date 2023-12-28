@@ -11,19 +11,18 @@ import XCTest
 final class LocationsListScreenViewModelTests: XCTestCase {
     
     private var testCoreDataStack = TestCoreDataStack()
-    private var coreDataUtility: CoreDataOperationsUtility!
-    private var temperatureInfoUtility: TemperatureInfoUtility!
     private let weatherService = MockWeatherService()
     private let jsonFileReader = MockJSONFileReader()
+    private var viewModel: LocationsListScreenViewModel!
 
     override func setUp() {
         super.setUp()
-        coreDataUtility = CoreDataOperationsUtility(coreDataStore: testCoreDataStack)
-        temperatureInfoUtility = TemperatureInfoUtility(weatherService: weatherService, coreDataActionsUtility: coreDataUtility)
+        let coreDataUtility = CoreDataOperationsUtility(coreDataStore: testCoreDataStack)
+        let temperatureInfoUtility = TemperatureInfoUtility(weatherService: weatherService, coreDataActionsUtility: coreDataUtility)
+        viewModel = LocationsListScreenViewModel(jsonFileReader: jsonFileReader, temperatureInfoUtility: temperatureInfoUtility, coreDataActionsUtility: coreDataUtility)
     }
 
     func testThatFavoriteStatusOfLocationCanBeToggled() {
-        let viewModel = LocationsListScreenViewModel(jsonFileReader: jsonFileReader, temperatureInfoUtility: temperatureInfoUtility, coreDataActionsUtility: coreDataUtility)
 
         let sourceLocation = Location(id: "100", name: "Boston", coordinates: .init(latitude: 23.4, longitude: 56.7))
 
@@ -35,15 +34,36 @@ final class LocationsListScreenViewModelTests: XCTestCase {
     }
 
     func testThatLocationsCanBeStoreAndRetrievedFromCache() {
-        let viewModel = LocationsListScreenViewModel(jsonFileReader: jsonFileReader, temperatureInfoUtility: temperatureInfoUtility, coreDataActionsUtility: coreDataUtility)
+
+        var cachedLocations = coreDataUtility.locationsListFromCache(with: testCoreDataStack.context)
+
+        XCTAssertTrue(cachedLocations.isEmpty)
 
         viewModel.loadLocations()
 
-        Thread.sleep(forTimeInterval: 3)
+        cachedLocations = coreDataUtility.locationsListFromCache(with: testCoreDataStack.context)
+        XCTAssertFalse(cachedLocations.isEmpty)
 
-        viewModel.loadLocations()
+        let viewModelLocations = viewModel.locations
 
-        Thread.sleep(forTimeInterval: 3)
-        print("")
+        XCTAssertFalse(viewModelLocations.isEmpty)
+
+        let firstLocation = viewModelLocations.first!
+        XCTAssertEqual(firstLocation.id, "1")
+        XCTAssertEqual(firstLocation.name, "London, United Kingdom")
+        XCTAssertEqual(firstLocation.coordinates.longitude, 0.1278)
+        XCTAssertEqual(firstLocation.coordinates.latitude, 51.5074)
+        XCTAssertFalse(firstLocation.isFavorite)
+
+        let lastLocation = viewModelLocations.last!
+        XCTAssertEqual(lastLocation.id, "9")
+        XCTAssertEqual(lastLocation.name, "Budapest, Hungary")
+        XCTAssertEqual(lastLocation.coordinates.longitude, 19.0402)
+        XCTAssertEqual(lastLocation.coordinates.latitude, 47.4979)
+        XCTAssertFalse(lastLocation.isFavorite)
+    }
+
+    func testThatViewModelTitleIsSetCorrectly() {
+        XCTAssertEqual(viewModel.title, "Locations List")
     }
 }

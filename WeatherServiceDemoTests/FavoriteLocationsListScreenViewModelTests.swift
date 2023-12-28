@@ -51,4 +51,16 @@ final class FavoriteLocationsListScreenViewModelTests: XCTestCase {
         XCTAssertEqual(shownAlertInfo?.title, "No Favorites")
         XCTAssertEqual(shownAlertInfo?.message, "You don't have any favorites. Please click on star icon to add location to favorites list")
     }
+
+    func testThatViewModelTitleIsSetCorrectly() {
+
+        let favoriteLocationsListScreenViewModel = FavoriteLocationsListScreenViewModel(
+            favoriteLocationModels: [],
+            temperatureInfoUtility: temperatureInfoUtility,
+            coreDataOperationsUtility: coreDataUtility) { favoriteLocationId in
+                //no-op
+            }
+
+        XCTAssertEqual(viewModel.title, "Favorites")
+    }
 }

@@ -121,7 +121,7 @@ final class CoreDataOperationsUtility {
     /// A method to load initial list of locations from local cache
     /// - Parameter managedContext: A managed context object
     /// - Returns: An array of Location objects
-    private func locationsListFromCache(with managedContext: NSManagedObjectContext) -> [Location] {
+    func locationsListFromCache(with managedContext: NSManagedObjectContext) -> [Location] {
 
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Location")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key:"id", ascending:true)]
