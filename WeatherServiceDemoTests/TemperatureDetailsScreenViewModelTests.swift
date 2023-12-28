@@ -56,7 +56,7 @@ final class TemperatureDetailsScreenViewModelTests: XCTestCase {
 
         let currentTemperatureViewModel = CurrentTemperatureViewModel(temperatureCelsius: 23.45, temperatureFahrenheit: 56.78, lastUpdateDateTimeString: "December 14, 2023", unit: .celsius)
 
-        let temperatureForecastViewModels: [ForecastTemperatureViewModel] = []
+        let temperatureForecastViewModels: [ForecastTemperatureViewModel] = [ForecastTemperatureViewModel(minimumTemperatureCelsius: 12.34, maximumTemperatureCelsius: 78.9, averageTemperatureCelsius: 34.11, minimumTemperatureFahrenheit: 33.44, maximumTemperatureFahrenheit: 66.78, averageTemperatureFahrenheit: 90.8, lastUpdatedDateString: "December 12, 2023", unit: .celsius)]
 
         let viewModel = TemperatureDetailsScreenViewModel(
             temperatureInfo: TemperatureInfo(
