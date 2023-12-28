@@ -116,8 +116,6 @@ final class CoreDataOperationsUtility {
         self.removeTemperatureForecastInfo(with: locationId, context: self.context)
     }
 
-    //MARK: Private methods
-
     /// A method to load initial list of locations from local cache
     /// - Parameter managedContext: A managed context object
     /// - Returns: An array of Location objects
@@ -145,6 +143,8 @@ final class CoreDataOperationsUtility {
         }
         return []
     }
+
+    //MARK: Private methods
 
     /// A method to get cached current temperature information from local cache
     /// - Parameter location: A location for which query is made
