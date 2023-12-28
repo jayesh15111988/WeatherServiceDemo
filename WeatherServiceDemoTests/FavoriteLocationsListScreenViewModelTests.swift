@@ -61,6 +61,6 @@ final class FavoriteLocationsListScreenViewModelTests: XCTestCase {
                 //no-op
             }
 
-        XCTAssertEqual(viewModel.title, "Favorites")
+        XCTAssertEqual(favoriteLocationsListScreenViewModel.title, "Favorites")
     }
 }

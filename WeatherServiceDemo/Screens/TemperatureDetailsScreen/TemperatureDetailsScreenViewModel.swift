@@ -62,9 +62,9 @@ final class TemperatureDetailsScreenViewModel {
         return location.name
     }
 
-    private var unitToSectionsMapping: [TemperatureUnit: [Section]] = [:]
+    var unitToSectionsMapping: [TemperatureUnit: [Section]] = [:]
 
-    private var currentTemperatureUnit: TemperatureUnit
+    private(set) var currentTemperatureUnit: TemperatureUnit
 
     init(
         temperatureInfo: TemperatureInfo,
@@ -164,7 +164,7 @@ struct CurrentTemperatureViewModel {
     let temperatureCelsius: Double
     let temperatureFahrenheit: Double
     let lastUpdateDateTimeString: String
-    let unit: TemperatureUnit
+    private(set) var unit: TemperatureUnit
 
     var temperatureDisplayValue: String {
         switch unit {
@@ -175,8 +175,8 @@ struct CurrentTemperatureViewModel {
         }
     }
 
-    func reverseUnit() -> TemperatureUnit {
-        return self.unit == .celsius ? .fahrenheit : .celsius
+    mutating func reverseUnit() {
+        self.unit = self.unit == .celsius ? .fahrenheit : .celsius
     }
 }
 
@@ -191,7 +191,7 @@ struct ForecastTemperatureViewModel {
     let averageTemperatureFahrenheit: Double
 
     let lastUpdatedDateString: String
-    let unit: TemperatureUnit
+    private(set) var unit: TemperatureUnit
 
     var minimumTemperatureDisplayValue: String {
         switch unit {
@@ -220,8 +220,8 @@ struct ForecastTemperatureViewModel {
         }
     }
 
-    func reverseUnit() -> TemperatureUnit {
-        return self.unit == .celsius ? .fahrenheit : .celsius
+    mutating func reverseUnit() {
+        self.unit = self.unit == .celsius ? .fahrenheit : .celsius
     }
 }
 

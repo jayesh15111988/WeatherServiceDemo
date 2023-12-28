@@ -12,12 +12,13 @@ final class LocationsListScreenViewModelTests: XCTestCase {
     
     private var testCoreDataStack = TestCoreDataStack()
     private let weatherService = MockWeatherService()
+    private var coreDataUtility: CoreDataOperationsUtility!
     private let jsonFileReader = MockJSONFileReader()
     private var viewModel: LocationsListScreenViewModel!
 
     override func setUp() {
         super.setUp()
-        let coreDataUtility = CoreDataOperationsUtility(coreDataStore: testCoreDataStack)
+        coreDataUtility = CoreDataOperationsUtility(coreDataStore: testCoreDataStack)
         let temperatureInfoUtility = TemperatureInfoUtility(weatherService: weatherService, coreDataActionsUtility: coreDataUtility)
         viewModel = LocationsListScreenViewModel(jsonFileReader: jsonFileReader, temperatureInfoUtility: temperatureInfoUtility, coreDataActionsUtility: coreDataUtility)
     }
