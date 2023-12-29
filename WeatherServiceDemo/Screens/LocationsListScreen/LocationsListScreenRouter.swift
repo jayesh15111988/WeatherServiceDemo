@@ -53,7 +53,10 @@ final class LocationsListScreenRouter {
     /// - Parameters:
     ///   - location: A location for which we need to know forecast details
     ///   - temperatureInfo: An info about current and forecast temperatures
-    func navigateToLocationForecastDetailsPage(with location: Location, temperatureInfo: TemperatureInfo) {
+    func navigateToLocationForecastDetailsPage(
+        with location: Location, 
+        temperatureInfo: TemperatureInfo
+    ) {
 
         DispatchQueue.main.async {
             let forecastDetailsPageRouter = TemperatureDetailsScreenRouter(rootViewController: self.navController, selectedLocation: location, temperatureInfo: temperatureInfo, temperatureInfoUtility: self.temperatureInfoUtility)

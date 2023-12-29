@@ -93,7 +93,9 @@ final class LocationsListScreenViewModel {
             self.alertInfo = AlertInfo(title: "No Favorites", message: "You have not favorited any locations yet.")
         } else {
 
-            let favoriteStatusChangedClosure: (String) -> Void = { locationId in
+            let favoriteStatusChangedClosure: (String) -> Void = { [weak self] locationId in
+
+                guard let self else { return }
 
                 if let updatedLocationIndex = self.locationsListScreenLocationModels.firstIndex(where: { $0.id == locationId }) {
                     self.cellIndexToReload = updatedLocationIndex
@@ -115,9 +117,13 @@ final class LocationsListScreenViewModel {
     /// A method to navigate to temperature forecast details page
     /// - Parameter location: A location for which the temperature details are queried
     func goToLocationForecastDetailsPage(with location: Location) {
+
         self.isLoading = true
 
-        self.temperatureInfoUtility.loadWeatherInformation(with: location) { result in
+        self.temperatureInfoUtility.loadWeatherInformation(with: location) { [weak self] result in
+
+            guard let self else { return }
+
             switch result {
             case .success(let temperatureInfo):
 
@@ -142,11 +148,14 @@ final class LocationsListScreenViewModel {
             return
         }
 
-        self.temperatureInfoUtility.loadWeatherInformation(with: location) { result in
+        self.temperatureInfoUtility.loadWeatherInformation(with: location) { [weak self] result in
+
+            guard let self else { return }
 
             self.isLoading = false
 
             switch result {
+
             case .success(let cachedLocationInfoData):
                 self.coreDataActionsUtility.saveTemperatureData(
                     with: location.id,
@@ -154,6 +163,7 @@ final class LocationsListScreenViewModel {
                     temperatureForecastViewModels: cachedLocationInfoData.1
                 )
             case .failure(let failure):
+
                 if case .internetUnavailable = failure {
                     return
                 }

@@ -23,7 +23,7 @@ final class ForecastTemperatureDetailsTableViewCell: UITableViewCell {
         return label
     }()
 
-    let minimumTemperatureLabel: UILabel = {
+    private let minimumTemperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -64,7 +64,9 @@ final class ForecastTemperatureDetailsTableViewCell: UITableViewCell {
         maximumTemperatureLabel.text = nil
         averageTemperatureLabel.text = nil
     }
-
+    
+    /// A method to configure cell with passed view model
+    /// - Parameter viewModel: A view model representing forecast temperature
     func configure(with viewModel: ForecastTemperatureViewModel) {
         self.lastUpdatedDateLabel.text = viewModel.lastUpdatedDateString
         self.minimumTemperatureLabel.text = viewModel.minimumTemperatureDisplayValue
@@ -72,7 +74,7 @@ final class ForecastTemperatureDetailsTableViewCell: UITableViewCell {
         self.averageTemperatureLabel.text = viewModel.averageTemperatureDisplayValue
     }
 
-    // MARK: Private methods
+    // MARK: Private methods for setting up and laying out views
 
     private func setupViews() {
         contentView.addSubview(lastUpdatedDateLabel)

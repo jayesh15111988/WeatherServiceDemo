@@ -12,14 +12,14 @@ protocol ReusableView {
     static var reuseIdentifier: String { get }
 }
 
-//MARK: ReusableView protocol conformance
-
+//MARK: ReusableView protocol conformance to table view cell
 extension UITableViewCell: ReusableView {
     static var reuseIdentifier: String {
         return String(describing: self)
     }
 }
 
+//MARK: ReusableView protocol conformance to table view header and footer view
 extension UITableViewHeaderFooterView: ReusableView {
     static var reuseIdentifier: String {
         return String(describing: self)

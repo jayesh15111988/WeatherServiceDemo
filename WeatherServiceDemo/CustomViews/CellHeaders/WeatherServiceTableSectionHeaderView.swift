@@ -47,8 +47,7 @@ final public class WeatherServiceTableSectionHeaderView: UITableViewHeaderFooter
         self.titleLabel.text = viewModel.title
     }
 
-    //MARK: Private methods
-
+    //MARK: Private methods for setting up and laying out views
     private func setupViews() {
         self.contentView.addSubview(titleLabel)
         self.contentView.backgroundColor = Style.shared.backgroundColor

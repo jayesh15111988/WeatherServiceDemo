@@ -14,11 +14,13 @@ protocol CoreDataStoreable: AnyObject {
     func saveContext ()
 }
 
+/// A core data store to centralize core data core code
 final class CoreDataStore: CoreDataStoreable {
 
     let persistentContainer: NSPersistentContainer
     let context: NSManagedObjectContext
 
+    /// A singleton instance for a core data store
     static let shared = CoreDataStore()
 
     private init() {
@@ -36,8 +38,8 @@ final class CoreDataStore: CoreDataStoreable {
             do {
                 try context.save()
             } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                let saveContextError = error as NSError
+                fatalError("Unresolved error while saving the data in local cache \(saveContextError), \(saveContextError.userInfo)")
             }
         }
     }

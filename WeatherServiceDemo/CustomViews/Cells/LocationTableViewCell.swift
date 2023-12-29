@@ -49,13 +49,15 @@ final class LocationTableViewCell: UITableViewCell {
         nameLabel.text = nil
         favoriteButtonView.setImage(nil, for: .normal)
     }
-
+    
+    /// A method to configure view with provided view model
+    /// - Parameter locationsModel: A model representing passed Location object
     func configure(with locationsModel: Location) {
         self.nameLabel.text = locationsModel.name
         self.favoriteButtonView.setImage(locationsModel.favoritesImage, for: .normal)
     }
 
-    // MARK: Private methods
+    // MARK: Private methods for setting up and laying out views
 
     private func setupViews() {
         contentView.addSubview(nameLabel)

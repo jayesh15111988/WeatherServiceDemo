@@ -12,6 +12,7 @@ import WeatherService
 
 /// Table view sections to show current and forecast temperatures in different sections
 enum Section {
+
     case currentTemperature(viewModel: CurrentTemperatureViewModel)
     case forecastTemperatures(viewModels: [ForecastTemperatureViewModel])
 
@@ -36,6 +37,7 @@ enum Section {
 
 /// A struct to store current temperature and forecast temperature info in a single container
 struct TemperatureInfo {
+
     let currentTemperatureViewModel: CurrentTemperatureViewModel
     let temperatureForecastViewModels: [ForecastTemperatureViewModel]
 
@@ -70,7 +72,8 @@ final class TemperatureDetailsScreenViewModel {
         temperatureInfo: TemperatureInfo,
         location: Location,
         coreDataActionsUtility: CoreDataOperationsUtility,
-        temperatureInfoUtility: TemperatureInfoUtility) {
+        temperatureInfoUtility: TemperatureInfoUtility
+    ) {
         self.temperatureInfo = temperatureInfo
         self.location = location
         self.coreDataActionsUtility = coreDataActionsUtility
@@ -84,7 +87,7 @@ final class TemperatureDetailsScreenViewModel {
                 )
         ]
         currentTemperatureUnit = temperatureInfo.currentTemperatureUnit
-        // Since default unit is celsius, we will use .celsius as an enum value to store sections in the dictionary
+        // Since the default unit is celsius, we will use .celsius as an enum value to store sections in the dictionary
         unitToSectionsMapping[self.temperatureInfo.currentTemperatureUnit] = self.sections
         reloadTableView = true
         self.isMarkedFavorite = location.isFavorite
@@ -116,7 +119,7 @@ final class TemperatureDetailsScreenViewModel {
         self.isLoading = false
     }
 
-    //A function to toggle temperature units based on the user input
+    //A function to toggle temperature units based on the input unit
     func toggleTemperatureUnit(newTemperatureUnit: TemperatureUnit) {
 
         //If current and new temperature units are same, we don't need to do anything

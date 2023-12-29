@@ -45,11 +45,15 @@ final class CoreDataOperationsUtility {
         }
     }
 
+    /// A method to get cached location from local storage
+    /// - Parameter completion: A closure with list of cached locations
     func getCachedLocations(completion: @escaping (([Location]) -> Void)) {
         let locationsListFromCache = self.locationsListFromCache(with: self.context)
         completion(locationsListFromCache)
     }
-
+    
+    /// A method to store list of locations in cache
+    /// - Parameter locationsList: A list of Location objects
     func storeLocationsInCache(with locationsList: [Location]) {
 
         guard let entity = NSEntityDescription.entity(forEntityName: "Location", in: self.context) else {
@@ -147,8 +151,8 @@ final class CoreDataOperationsUtility {
     //MARK: Private methods
 
     /// A method to get cached current temperature information from local cache
-    /// - Parameter location: A location for which query is made
-    /// - Returns: An optional CurrentTemperatureViewModel object if it exists in cache
+    /// - Parameter location: A location for which weather query is made
+    /// - Returns: An optional CurrentTemperatureViewModel object if it exists in cache for the passed location
     private func getCachedCurrentTemperatureInfoFromDatabase(with location: Location) -> CurrentTemperatureViewModel? {
 
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CurrentTemperature")
@@ -174,7 +178,7 @@ final class CoreDataOperationsUtility {
 
     /// A method to get cached temperature forecast details information from local cache
     /// - Parameter location: A location for which query is made
-    /// - Returns: An optional array of ForecastTemperatureViewModel if it exists in cache
+    /// - Returns: An optional array of ForecastTemperatureViewModel if it exists in cache for the passed location
     private func getCachedTemperatureForecastInfoFromDatabase(with location: Location) -> [ForecastTemperatureViewModel]? {
 
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ForecastTemperature")
@@ -182,7 +186,9 @@ final class CoreDataOperationsUtility {
         fetchRequest.predicate = NSPredicate(format: "locationId == %@", location.id)
 
         fetchRequest.sortDescriptors = [NSSortDescriptor(key:"sequence", ascending:true)]
+
         do {
+
             let cachedLocations = try context.fetch(fetchRequest)
 
             let forecastViewModels: [ForecastTemperatureViewModel] = cachedLocations.map { cachedLocation -> ForecastTemperatureViewModel? in
@@ -200,11 +206,14 @@ final class CoreDataOperationsUtility {
         return nil
     }
 
-    /// A method to remove current temperature information from cache
+    /// A method to remove current temperature information from cache for passed location id
     /// - Parameters:
     ///   - locationId: id of the location
     ///   - context: Core data managed object context
-    private func removeCurrentTemperatureInfo(with locationId: String, context: NSManagedObjectContext) {
+    private func removeCurrentTemperatureInfo(
+        with locationId: String,
+        context: NSManagedObjectContext
+    ) {
 
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CurrentTemperature")
         fetchRequest.predicate = NSPredicate(format: "locationId == %@", locationId)
@@ -225,11 +234,15 @@ final class CoreDataOperationsUtility {
     /// - Parameters:
     ///   - locationId: Id of the concerned location
     ///   - context: Core data managed object context
-    private func removeTemperatureForecastInfo(with locationId: String, context: NSManagedObjectContext) {
+    private func removeTemperatureForecastInfo(
+        with locationId: String,
+        context: NSManagedObjectContext
+    ) {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ForecastTemperature")
         fetchRequest.predicate = NSPredicate(format: "locationId == %@", locationId)
 
         do {
+
             let cachedTemperatureForecastViewModels = try context.fetch(fetchRequest)
 
             cachedTemperatureForecastViewModels.forEach { context.delete($0) }
@@ -246,7 +259,11 @@ final class CoreDataOperationsUtility {
     ///   - viewModel: A current temperature view model instance
     ///   - context: Core data managed object context
     ///   - locationId: Id of the concerned location
-    private func saveCurrentTemperatureViewModel(with viewModel: CurrentTemperatureViewModel, context: NSManagedObjectContext, locationId: String) {
+    private func saveCurrentTemperatureViewModel(
+        with viewModel: CurrentTemperatureViewModel,
+        context: NSManagedObjectContext,
+        locationId: String
+    ) {
 
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CurrentTemperature")
         fetchRequest.predicate = NSPredicate(format: "locationId == %@", locationId)
@@ -286,7 +303,6 @@ final class CoreDataOperationsUtility {
     ) {
 
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ForecastTemperature")
-
         fetchRequest.predicate = NSPredicate(format: "locationId == %@", locationId)
 
         do {

@@ -44,9 +44,7 @@ final class AlertDisplayUtility: AlertDisplayable {
     private var alertInfoInQueue: [AlertInfoInQueue] = []
     /// A method to show an alert message
     /// - Parameters:
-    ///   - title: Title to show on alert dialogue
-    ///   - message: A message to display with detailed description why alert was shown
-    ///   - actions: The list of actions user want to add to alertController
+    ///   - alertInfo: An object of AlertInfo type to hold title, message and actions
     ///   - parentController: A parent controller on which to show this alert dialogue
     func showAlert(with alertInfo: AlertInfo, parentViewController: UIViewController) {
 
@@ -67,6 +65,9 @@ final class AlertDisplayUtility: AlertDisplayable {
                 guard !self.alertInfoInQueue.isEmpty else {
                     return
                 }
+
+                //Successively remove alert from queue and show it to user
+
                 let lastAlertInfoFromQueue = self.alertInfoInQueue.removeFirst()
                 self.showAlert(with: lastAlertInfoFromQueue.alertInfo, parentViewController: lastAlertInfoFromQueue.parentViewController)
             }))

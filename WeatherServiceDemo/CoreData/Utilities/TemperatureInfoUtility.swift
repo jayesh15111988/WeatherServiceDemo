@@ -9,6 +9,7 @@ import OSLog
 
 import WeatherService
 
+/// An utility to fetch weather information for passed Location object
 final class TemperatureInfoUtility {
 
     private let weatherService: WeatherServiceable
@@ -21,7 +22,8 @@ final class TemperatureInfoUtility {
 
     init(
         weatherService: WeatherServiceable,
-        coreDataActionsUtility: CoreDataOperationsUtility) {
+        coreDataActionsUtility: CoreDataOperationsUtility
+    ) {
             self.weatherService = weatherService
             self.coreDataActionsUtility = coreDataActionsUtility
     }
@@ -40,9 +42,12 @@ final class TemperatureInfoUtility {
                 switch result {
 
                 case .success(let weatherData):
+
                     let (currentTemperatureViewModel, forecastTemperatureViewModels) = self.convertRemoteWeatherDataToLocalViewModels(with: weatherData, location: location)
                     completion(.success((currentTemperatureViewModel, forecastTemperatureViewModels)))
+
                 case .failure(let failure):
+
                     // If the network request failed, try to load it from the local cache
                     // We do this instead of using cache by default to make sure we always get the latest forecast from official source instead of stale data
                     if case .internetUnavailable = failure {
@@ -58,6 +63,7 @@ final class TemperatureInfoUtility {
                     } else {
                         completion(.failure(failure))
                     }
+
                 }
             }
     }
@@ -67,7 +73,10 @@ final class TemperatureInfoUtility {
     ///   - weatherData: A network weather data
     ///   - location: A location for which weather data was requested
     /// - Returns: A tuple containing current and forecast temperature info
-    func convertRemoteWeatherDataToLocalViewModels(with weatherData: WSWeatherData, location: Location) -> (currentTemperatureViewModel: CurrentTemperatureViewModel, forecastTemperatureViewModels: [ForecastTemperatureViewModel]) {
+    func convertRemoteWeatherDataToLocalViewModels(
+        with weatherData: WSWeatherData,
+        location: Location
+    ) -> (currentTemperatureViewModel: CurrentTemperatureViewModel, forecastTemperatureViewModels: [ForecastTemperatureViewModel]) {
 
         let currentTemperatureViewModel = CurrentTemperatureViewModel(
             temperatureCelsius: weatherData.current.temperatureCelsius,

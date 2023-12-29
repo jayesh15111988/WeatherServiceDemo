@@ -60,7 +60,10 @@ final class FavoriteLocationsListScreenViewModel {
         self.isLoading = true
 
         //Try to load weather data for the location
-        self.temperatureInfoUtility.loadWeatherInformation(with: location) { result in
+        self.temperatureInfoUtility.loadWeatherInformation(with: location) { [weak self] result in
+
+            guard let self else { return }
+
             switch result {
             case .success(let temperatureInfo):
 

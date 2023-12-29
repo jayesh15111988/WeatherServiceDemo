@@ -7,7 +7,7 @@
 
 import UIKit
 
-/// A class to perform loading indicator actions
+/// A class to perform loading indicator actions while loading data
 final class ActivityIndicatorViewProvider {
 
     private let activityIndicatorView: UIActivityIndicatorView

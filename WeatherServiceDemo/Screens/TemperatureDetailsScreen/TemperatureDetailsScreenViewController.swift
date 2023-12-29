@@ -57,6 +57,7 @@ final class TemperatureDetailsScreenViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    //MARK: Private methods
     private func setupViews() {
         self.title = viewModel.title
         self.view.backgroundColor = Style.shared.backgroundColor
@@ -125,8 +126,9 @@ final class TemperatureDetailsScreenViewController: UIViewController {
 }
 
 extension TemperatureDetailsScreenViewController {
-
-    func setupSubscriptions() {
+    
+    /// A method to set up subscriptions for observables
+    private func setupSubscriptions() {
 
         viewModel.$reloadTableView.filter { $0 }.receive(on: DispatchQueue.main).sink { [weak self] reloadTableView in
 

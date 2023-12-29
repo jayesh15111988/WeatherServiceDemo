@@ -7,8 +7,8 @@
 
 import UIKit
 
-class CurrentTemperatureDetailsTableViewCell: UITableViewCell {
-    
+final class CurrentTemperatureDetailsTableViewCell: UITableViewCell {
+
     /// Style Constants
     private enum Constants {
         static let horizontalPadding: CGFloat = 8.0
@@ -47,13 +47,15 @@ class CurrentTemperatureDetailsTableViewCell: UITableViewCell {
         lastUpdatedDateTimeLabel.text = nil
         currentTemperatureLabel.text = nil
     }
-
+    
+    /// A method to configure cell with passed view model
+    /// - Parameter viewModel: A view model representing current temperature data
     func configure(with viewModel: CurrentTemperatureViewModel) {
         self.lastUpdatedDateTimeLabel.text = viewModel.lastUpdateDateTimeString
         self.currentTemperatureLabel.text = viewModel.temperatureDisplayValue
     }
 
-    // MARK: Private methods
+    // MARK: Private methods for setting up and laying out views
 
     private func setupViews() {
         contentView.addSubview(lastUpdatedDateTimeLabel)
@@ -75,5 +77,6 @@ class CurrentTemperatureDetailsTableViewCell: UITableViewCell {
             lastUpdatedDateTimeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.horizontalPadding),
             lastUpdatedDateTimeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.verticalPadding),
         ])
+
     }
 }

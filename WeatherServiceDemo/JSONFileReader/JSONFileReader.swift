@@ -11,11 +11,13 @@ protocol JSONFileReadable {
     func getModelFromJSONFile<T: Decodable>(with name: String, completion: @escaping (T?) -> Void)
 }
 
+/// <#Description#>
 final class JSONFileReader: JSONFileReadable {
 
     /// A method to get the specified Decodable model after converting local JSON data into model object
-    /// - Parameter name: Name of the JSON file to read the data from
-    /// - Returns: A specified Decodable model objet
+    /// - Parameters:
+    ///   - name: Name of the JSON file to read the data from
+    ///   - completion: A completion closure returning generic type T conforming to Decodable protocol
     func getModelFromJSONFile<T: Decodable>(with name: String, completion: @escaping (T?) -> Void) {
 
         DispatchQueue.global(qos: .default).async {
